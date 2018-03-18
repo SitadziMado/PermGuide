@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,15 +16,13 @@ using System.Windows.Shapes;
 namespace PermGuide
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для Profile.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProfilePage : Page
     {
-        public MainWindow()
+        public ProfilePage()
         {
             InitializeComponent();
-            var container = new PermGuideContainer();
-            var manager = new DBManager();
         }
     }
 }
