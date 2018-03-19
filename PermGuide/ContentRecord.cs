@@ -12,19 +12,20 @@ namespace PermGuide
     using System;
     using System.Collections.Generic;
     
-    public partial class ArticleRecord : ContentRecord
+    public partial class ContentRecord
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ArticleRecord()
+        public ContentRecord()
         {
-            this.FileRecord = new HashSet<FileRecord>();
+            this.ReviewRecord = new HashSet<ReviewRecord>();
         }
     
+        public System.Guid Id { get; set; }
+        public string Name { get; set; }
+        public ProposalStatus ProposalStatus { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FileRecord> FileRecord { get; set; }
-        public virtual SightRecord SightRecord { get; set; }
-        public virtual RegionRecord RegionRecord { get; set; }
-        public virtual ExcursionRecord ExcursionRecord { get; set; }
+        public virtual ICollection<ReviewRecord> ReviewRecord { get; set; }
+        public virtual UserRecord UserRecord { get; set; }
     }
 }

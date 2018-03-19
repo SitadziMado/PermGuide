@@ -10,15 +10,11 @@
 namespace PermGuide
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ReviewRecord
+    public enum UserStatus : int
     {
-        public System.Guid Id { get; set; }
-        public System.DateTime CreationDate { get; set; }
-        public string Mark { get; set; }
-    
-        public virtual UserRecord UserRecord { get; set; }
-        public virtual ContentRecord ContentRecord { get; set; }
+        User = 0,
+        Moderator = 1,
+        Administrator = 2
     }
 }

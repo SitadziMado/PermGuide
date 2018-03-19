@@ -8,19 +8,39 @@ namespace PermGuide.Classes
 {
     class Moderator : User
     {
-        public Moderator(UserRecord userRecord) :
+        internal Moderator(UserRecord userRecord) :
             base(userRecord)
         {
 
         }
 
+        public void Add(IContent content)
+        {
+            var record = content.GetRecord();
+
+            record.Id = Guid.NewGuid();
+            record.ProposalStatus = ProposalStatus.Added;
+            record.UserRecord = UserRecord;
+
+            Manager.Container.ContentRecordSet.Add(record);
+            Manager.Container.SaveChanges();
+        }
+
+        public void Process(IContent content, ProposalStatus status)
+        {
+            var record = content.GetRecord();
+
+            record.ProposalStatus = status;
+            Manager.Container.SaveChanges();
+        }
+
         /* Moderator
          ***********
-         * GetSights()
-         * Add(IProposable)
-         * GetExcursions()
-         * Accept(IProposable)
-         * GetArticles()
+         / GetSights()
+         V Add(IProposable)
+         / GetExcursions()
+         V Accept(IProposable)
+         / GetArticles()
          */
     }
 }

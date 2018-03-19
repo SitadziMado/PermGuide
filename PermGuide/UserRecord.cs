@@ -19,26 +19,26 @@ namespace PermGuide
         {
             this.ReviewRecord = new HashSet<ReviewRecord>();
             this.TimetableRecord = new HashSet<TimetableRecord>();
-            this.ExcursionRecord = new HashSet<ExcursionRecord>();
-            this.ArticleRecord = new HashSet<ArticleRecord>();
             this.FileRecord = new HashSet<FileRecord>();
+            this.ContentRecord = new HashSet<ContentRecord>();
+            this.BanStatus = new BanStatus();
         }
     
         public System.Guid Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string Nickname { get; set; }
-        public string Status { get; set; }
+        public UserStatus Status { get; set; }
+    
+        public BanStatus BanStatus { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReviewRecord> ReviewRecord { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TimetableRecord> TimetableRecord { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExcursionRecord> ExcursionRecord { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArticleRecord> ArticleRecord { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileRecord> FileRecord { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContentRecord> ContentRecord { get; set; }
     }
 }

@@ -28,10 +28,8 @@ namespace PermGuide
         public virtual DbSet<UserRecord> UserRecordSet { get; set; }
         public virtual DbSet<ReviewRecord> ReviewRecordSet { get; set; }
         public virtual DbSet<FileRecord> FileRecordSet { get; set; }
-        public virtual DbSet<SightRecord> SightRecordSet { get; set; }
-        public virtual DbSet<ArticleRecord> ArticleRecordSet { get; set; }
-        public virtual DbSet<ExcursionRecord> ExcursionRecordSet { get; set; }
         public virtual DbSet<RegionRecord> RegionRecordSet { get; set; }
         public virtual DbSet<TimetableRecord> TimetableRecordSet { get; set; }
+        public virtual DbSet<ContentRecord> ContentRecordSet { get; set; }
     }
 }

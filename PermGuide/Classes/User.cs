@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,64 +9,9 @@ namespace PermGuide.Classes
 {
     class User
     {
-        protected User(UserRecord userRecord)
+        internal User(UserRecord userRecord)
         {
-            mUserRecord = userRecord;
-        }
-
-        public static User Register(string login, string password, string nickname = "")
-        {
-            var userRecord = new UserRecord
-            {
-                Login = login,
-                Password = password.Encrypt(),
-                Nickname = nickname,
-                Status = UserStatusString
-            };
-
-            var ans = from v
-                      in DatabaseManager.Container.UserRecordSet
-                      where v.Login == login
-                      select v;
-
-            if (ans.Count() == 0)
-                throw new UserNotRegisteredException();
-
-            DatabaseManager.Container.UserRecordSet.Add(userRecord);
-            DatabaseManager.Container.SaveChanges();
-
-            return new User(userRecord);
-        }
-
-        public static User Login(string login, string password)
-        {
-            var encryptedPassword = password.Encrypt();
-
-            var ans = from v
-                      in DatabaseManager.Container.UserRecordSet
-                      where v.Login == login && v.Password == encryptedPassword
-                      select v;
-
-            User result;
-
-            try
-            {
-                var rec = ans.Single();
-
-                switch (rec.Status)
-                {
-                    case UserStatusString: result = new User(rec); break;
-                    case ModeratorStatusString: result = new Moderator(rec); break;
-                    case AdministratorStatusString: result = new Administrator(rec); break;
-                    default: throw new UserNotRegisteredException();
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                throw new UserNotRegisteredException();
-            }
-
-            return result;
+            UserRecord = userRecord;
         }
 
         public void UpdateData(string login, string password, string nickname)
@@ -73,33 +19,98 @@ namespace PermGuide.Classes
             if (!Valid)
                 throw new RecordNotValidException();
 
-            mUserRecord.Login = login;
-            mUserRecord.Password = password.Encrypt();
-            mUserRecord.Nickname = nickname;
+            UserRecord.Login = login;
+            UserRecord.Password = password.Encrypt();
+            UserRecord.Nickname = nickname;
 
-            DatabaseManager.Container.SaveChanges();
+            Manager.Container.SaveChanges();
+        }
+
+        public HashSet<Article> GetArticles()
+            => GetHashSetOfRecords<Article, ArticleRecord>(x => x.ProposalStatus == ProposalStatus.Added);
+
+        public HashSet<Excursion> GetExcursions()
+            => GetHashSetOfRecords<Excursion, ExcursionRecord>(x => x.ProposalStatus == ProposalStatus.Added);
+
+        public HashSet<Sight> GetSights()
+            => GetHashSetOfRecords<Sight, SightRecord>(x => x.ProposalStatus == ProposalStatus.Added);
+
+        public HashSet<Timetable> GetTimetables() => GetHashSetOfRecords<Timetable, TimetableRecord>();
+
+        public void LeaveReview(IContent content, int mark, string comment)
+        {
+            ReviewRecord record = new ReviewRecord
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTime.Now,
+                Mark = $"{mark}: {comment}",
+                UserRecord = UserRecord,
+                ContentRecord = content.GetRecord()
+            };
+
+            Manager.Container.ReviewRecordSet.Add(record);
+            Manager.Container.SaveChanges();
+        }
+
+        public void Propose(IContent content)
+        {
+            var record = content.GetRecord();
+
+            record.Id = Guid.NewGuid();
+            record.ProposalStatus = ProposalStatus.Proposed;
+            record.UserRecord = UserRecord;
+
+            Manager.Container.ContentRecordSet.Add(record);
+            Manager.Container.SaveChanges();
+        }
+
+        protected HashSet<T> GetHashSetOfRecords<T, U>()
+            where T : class
+            where U : class
+        {
+            return GetHashSetOfRecords<T, U>(x => true);
+        }
+
+        protected HashSet<T> GetHashSetOfRecords<T, U>(Predicate<U> predicate)
+            where T : class
+            where U : class
+        {
+            HashSet<T> result;
+
+            try
+            {
+                result = new HashSet<T>(
+                    from v
+                    in Manager.GetRecordSet<U>().AsEnumerable()
+                    where predicate(v)
+                    select (T)Activator.CreateInstance(typeof(T), v) // new T(v)
+                );
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
         }
 
         /* User
          ******
-         * GetSightPoints()
-         * LeaveReview(IReviewable) where IReviewable = { Sight, Excursion }
-         * GetExcursionsInfo()
-         * Propose(IProposable) where IProposable = { Sight, Excursion, Article }
-         * GetArticleInfo()
-         * UploadMedia(File)
-         * GetTimetableInfo()
+         V GetSightPoints()
+         V LeaveReview(IReviewable) where IReviewable = { Sight, Excursion }
+         V GetExcursionsInfo()
+         V Propose(IProposable) where IProposable = { Sight, Excursion, Article }
+         V GetArticleInfo()
+         X UploadMedia(File)
+         V GetTimetableInfo()
          */
 
         public static readonly User Empty = 
             new User(new UserRecord { Login = "undefined", Password = "undefined" });
 
-        public bool Valid => DatabaseManager.Container.UserRecordSet.Contains(mUserRecord);
+        public DatabaseManager Manager { get; set; }
+        public UserRecord UserRecord { get; private set; }
 
-        private const string UserStatusString = "user";
-        private const string ModeratorStatusString = "moderator";
-        private const string AdministratorStatusString = "administrator";
-
-        private UserRecord mUserRecord;
+        public bool Valid => Manager.Container.UserRecordSet.Contains(UserRecord);
     }
 }

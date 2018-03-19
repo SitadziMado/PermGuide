@@ -8,17 +8,36 @@ namespace PermGuide.Classes
 {
     class Administrator : User
     {
-        public Administrator(UserRecord userRecord) :
+        internal Administrator(UserRecord userRecord) :
             base(userRecord)
         {
 
         }
 
+        public void ChangeStatus(User other, UserStatus status)
+        {
+            other.UserRecord.Status = status;
+            Manager.Container.SaveChanges();
+        }
+
+        public void Ban(User other, DateTime tillWhen)
+        {
+            other.UserRecord.BanStatus.IsBanned = true;
+            other.UserRecord.BanStatus.BannedTill = tillWhen;
+            Manager.Container.SaveChanges();
+        }
+
+        public HashSet<Review> GetComplaints()
+        {
+            // ToDo: upgrade this method
+            return GetHashSetOfRecords<Review, ReviewRecord>(x => x.Mark == "");
+        }
+
         /* Administrator
          ***************
-         * ChangeStatus(User)
-         * Ban(User)
-         * GetComplaints()
+         V ChangeStatus(User)
+         V Ban(User)
+         V GetComplaints()
          */
     }
 }

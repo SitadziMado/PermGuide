@@ -12,23 +12,13 @@ namespace PermGuide
     using System;
     using System.Collections.Generic;
     
-    public partial class SightRecord
+    public partial class SightRecord : ContentRecord
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SightRecord()
-        {
-            this.ReviewRecord = new HashSet<ReviewRecord>();
-        }
-    
-        public System.Guid Id { get; set; }
-        public string Name { get; set; }
         public System.Data.Entity.Spatial.DbGeography Location { get; set; }
         public string Address { get; set; }
     
         public virtual RegionRecord RegionRecord { get; set; }
         public virtual ArticleRecord ArticleRecord { get; set; }
         public virtual ExcursionRecord ExcursionRecord { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReviewRecord> ReviewRecord { get; set; }
     }
 }

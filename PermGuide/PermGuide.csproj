@@ -69,12 +69,25 @@
     <Compile Include="ArticleRecord.cs">
       <DependentUpon>PermGuide.tt</DependentUpon>
     </Compile>
+    <Compile Include="BanStatus.cs">
+      <DependentUpon>PermGuide.tt</DependentUpon>
+    </Compile>
     <Compile Include="Classes\Administrator.cs" />
+    <Compile Include="Classes\Article.cs" />
+    <Compile Include="Classes\Excursion.cs" />
+    <Compile Include="Classes\File.cs" />
+    <Compile Include="Classes\IContent.cs" />
     <Compile Include="Classes\Moderator.cs" />
     <Compile Include="Classes\RecordNotValidException.cs" />
+    <Compile Include="Classes\Review.cs" />
+    <Compile Include="Classes\Sight.cs" />
+    <Compile Include="Classes\Timetable.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\UserNotRegisteredException.cs" />
-    <Compile Include="DatabaseManager.cs" />
+    <Compile Include="Classes\DatabaseManager.cs" />
+    <Compile Include="ContentRecord.cs">
+      <DependentUpon>PermGuide.tt</DependentUpon>
+    </Compile>
     <Compile Include="ExcursionRecord.cs">
       <DependentUpon>PermGuide.tt</DependentUpon>
     </Compile>
@@ -95,6 +108,12 @@
     </Compile>
     <Compile Include="Pages\TimetablePage.xaml.cs">
       <DependentUpon>TimetablePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProposalStatus.cs">
+      <DependentUpon>PermGuide.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserStatus.cs">
+      <DependentUpon>PermGuide.tt</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="PermGuide.cs">
