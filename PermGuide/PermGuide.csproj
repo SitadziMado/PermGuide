@@ -69,6 +69,8 @@
     <Compile Include="ArticleRecord.cs">
       <DependentUpon>PermGuide.tt</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Administrator.cs" />
+    <Compile Include="Classes\Moderator.cs" />
     <Compile Include="Classes\RecordNotValidException.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\UserNotRegisteredException.cs" />
