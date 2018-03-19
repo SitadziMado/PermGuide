@@ -340,7 +340,7 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Uri" Type="String" Nullable="false" />
-          <Property Name="MediaType" Type="String" Nullable="false" />
+          <Property Name="MediaType" Type="PermGuide.MediaType" Nullable="false" />
           <NavigationProperty Name="ArticleRecord" Relationship="PermGuide.ArticleFile" FromRole="File" ToRole="Article" />
           <NavigationProperty Name="UserRecord" Relationship="PermGuide.UserRecordFileRecord" FromRole="FileRecord" ToRole="UserRecord" />
         </EntityType>
@@ -447,6 +447,14 @@
         <EnumType Name="ProposalStatus">
           <Member Name="Added" />
           <Member Name="Proposed" />
+        </EnumType>
+        <EnumType Name="MediaType">
+          <Member Name="PlainText" />
+          <Member Name="Html" />
+          <Member Name="Image" />
+          <Member Name="Audio" />
+          <Member Name="Video" />
+          <Member Name="Other" />
         </EnumType>
       </Schema>
     </edmx:ConceptualModels>

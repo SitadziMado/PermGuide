@@ -8,7 +8,7 @@ namespace PermGuide.Classes
 {
     interface IContent
     {
-        void Process(ProposalStatus status);
+        // void Process(ProposalStatus status);
         ContentRecord GetRecord();
     }
 }

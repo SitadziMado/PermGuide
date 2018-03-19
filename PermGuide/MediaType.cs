@@ -10,15 +10,14 @@
 namespace PermGuide
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class FileRecord
+    public enum MediaType : int
     {
-        public System.Guid Id { get; set; }
-        public string Uri { get; set; }
-        public MediaType MediaType { get; set; }
-    
-        public virtual ArticleRecord ArticleRecord { get; set; }
-        public virtual UserRecord UserRecord { get; set; }
+        PlainText = 0,
+        Html = 1,
+        Image = 2,
+        Audio = 3,
+        Video = 4,
+        Other = 5
     }
 }

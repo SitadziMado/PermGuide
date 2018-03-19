@@ -109,7 +109,7 @@ namespace PermGuide.Classes
             new User(new UserRecord { Login = "undefined", Password = "undefined" });
 
         public DatabaseManager Manager { get; set; }
-        public UserRecord UserRecord { get; private set; }
+        internal UserRecord UserRecord { get; private set; }
 
         public bool Valid => Manager.Container.UserRecordSet.Contains(UserRecord);
     }

@@ -94,6 +94,9 @@
     <Compile Include="FileRecord.cs">
       <DependentUpon>PermGuide.tt</DependentUpon>
     </Compile>
+    <Compile Include="MediaType.cs">
+      <DependentUpon>PermGuide.tt</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ArticlePage.xaml.cs">
       <DependentUpon>ArticlePage.xaml</DependentUpon>
     </Compile>

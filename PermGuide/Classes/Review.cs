@@ -13,6 +13,6 @@ namespace PermGuide.Classes
             ReviewRecord = reviewRecord;
         }
 
-        public ReviewRecord ReviewRecord { get; private set; }
+        internal ReviewRecord ReviewRecord { get; private set; }
     }
 }

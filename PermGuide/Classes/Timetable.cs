@@ -13,6 +13,6 @@ namespace PermGuide.Classes
             TimetableRecord = timetableRecord;
         }
 
-        public TimetableRecord TimetableRecord { get; private set; }
+        internal TimetableRecord TimetableRecord { get; private set; }
     }
 }
