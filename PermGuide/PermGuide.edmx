@@ -451,6 +451,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="SightRecord" Relationship="PermGuide.RegionSight" FromRole="Region" ToRole="Sight" />
           <NavigationProperty Name="ArticleRecord" Relationship="PermGuide.RegionArticle" FromRole="Region" ToRole="Article" />
+          <Property Name="Name" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="TimetableRecord">
           <Key>

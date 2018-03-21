@@ -7,20 +7,16 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Sight : IContent
+    class Sight : BaseContent
     {
-        internal Sight(SightRecord sightRecord)
+        internal Sight(SightRecord sightRecord) :
+            base(sightRecord)
         {
-            SightRecord = sightRecord;
+
         }
 
-        public ContentRecord GetRecord()
-        {
-            return SightRecord;
-        }
+        public DbGeography Location => (Record as SightRecord).Location;
 
-        public DbGeography Location => SightRecord.Location;
-
-        internal SightRecord SightRecord { get; private set; }
+        internal SightRecord SightRecord => Record as SightRecord;
     }
 }

@@ -23,7 +23,7 @@ namespace PermGuide.Classes
             UserRecord.Password = password.Encrypt();
             UserRecord.Nickname = nickname;
 
-            Manager.Container.SaveChanges();
+            SaveChanges();
         }
 
         public HashSet<Article> GetArticles()
@@ -37,41 +37,49 @@ namespace PermGuide.Classes
 
         public HashSet<Timetable> GetTimetables() => GetHashSetOfRecords<Timetable, TimetableRecord>();
 
-        public void LeaveReview(IContent content, int mark, string comment)
+        public void ChangeStatus(User other, UserStatus status)
         {
-            ReviewRecord record = new ReviewRecord
-            {
-                // Id = Guid.NewGuid(),
-                CreationDate = DateTime.Now,
-                Mark = $"{mark}: {comment}",
-                UserRecord = UserRecord,
-                ContentRecord = content.GetRecord()
-            };
+            if (!IsAdmin)
+                throw new AccessDeniedException();
 
-            Manager.Container.ReviewRecordSet.Add(record);
+            other.UserRecord.Status = status;
+            SaveChanges();
+        }
+
+        public void Ban(User other, DateTime tillWhen)
+        {
+            if (!IsAdmin)
+                throw new AccessDeniedException();
+
+            other.UserRecord.BanStatus.IsBanned = true;
+            other.UserRecord.BanStatus.BannedTill = tillWhen;
+            SaveChanges();
+        }
+
+        public HashSet<Review> GetComplaints()
+        {
+            if (!IsAdmin)
+                throw new AccessDeniedException();
+
+            return GetHashSetOfRecords<Review, ReviewRecord>(x => x.Mark == "");
+        }
+
+        public bool Owns(BaseContent content)
+            => UserRecord == content.Record.UserRecord;
+
+        public void SaveChanges()
+        {
             Manager.Container.SaveChanges();
         }
 
-        public void Propose(IContent content)
-        {
-            var record = content.GetRecord();
-
-            // record.Id = Guid.NewGuid();
-            record.ProposalStatus = ProposalStatus.Proposed;
-            record.UserRecord = UserRecord;
-
-            Manager.Container.ContentRecordSet.Add(record);
-            Manager.Container.SaveChanges();
-        }
-
-        protected HashSet<T> GetHashSetOfRecords<T, U>()
+        private HashSet<T> GetHashSetOfRecords<T, U>()
             where T : class
             where U : class
         {
             return GetHashSetOfRecords<T, U>(x => true);
         }
 
-        protected HashSet<T> GetHashSetOfRecords<T, U>(Predicate<U> predicate)
+        private HashSet<T> GetHashSetOfRecords<T, U>(Predicate<U> predicate)
             where T : class
             where U : class
         {
@@ -94,21 +102,13 @@ namespace PermGuide.Classes
             return result;
         }
 
-        /* User
-         ******
-         V GetSightPoints()
-         V LeaveReview(IReviewable) where IReviewable = { Sight, Excursion }
-         V GetExcursionsInfo()
-         V Propose(IProposable) where IProposable = { Sight, Excursion, Article }
-         V GetArticleInfo()
-         X UploadMedia(File)
-         V GetTimetableInfo()
-         */
-
         public static readonly User Empty = 
             new User(new UserRecord { Login = "undefined", Password = "undefined" });
 
+        public bool IsAdmin => Status == UserStatus.Administrator;
+        public bool IsModerator => IsAdmin || Status == UserStatus.Moderator;
         public DatabaseManager Manager { get; set; }
+        public UserStatus Status => UserRecord.Status;
         internal UserRecord UserRecord { get; private set; }
 
         public bool Valid => Manager.Container.UserRecordSet.Contains(UserRecord);

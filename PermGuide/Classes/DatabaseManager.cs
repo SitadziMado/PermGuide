@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
@@ -11,14 +12,16 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class DatabaseManager
+    sealed class DatabaseManager
     {
         public DatabaseManager()
         {
             Container = new PermGuideContainer();
 
+            mSets = new Dictionary<Type, object>();
+
             // При добавлении класса следует обновить
-            mSets = new Dictionary<Type, object>
+            /*mSets = new Dictionary<Type, object>
             {
                 { typeof(ArticleRecord), Container.ContentRecordSet }, // ArticleRecordSet },
                 { typeof(ExcursionRecord), Container.ContentRecordSet }, // ExcursionRecordSet },
@@ -37,9 +40,9 @@ namespace PermGuide.Classes
                 { typeof(DbSet<SightRecord>), Container.ContentRecordSet }, // SightRecordSet },
                 { typeof(DbSet<TimetableRecord>), Container.TimetableRecordSet },
                 { typeof(DbSet<UserRecord>), Container.UserRecordSet },
-            };
+            };*/
 
-            /*var thisAsm = Assembly.GetExecutingAssembly();
+            var thisAsm = Assembly.GetExecutingAssembly();
             var contType = Container.GetType();
 
             var keys = from v
@@ -50,15 +53,16 @@ namespace PermGuide.Classes
             var values = from v
                          in contType.GetProperties()
                          where v.Name.Contains("RecordSet")
-                         select new KeyValuePair<string, PropertyInfo>(v.Name, v);
-            
-            var hashed = new Dictionary<string, PropertyInfo>();
-
-            foreach (var v in values)
-                hashed.Add(v.Key, v.Value);
+                         select v;
 
             foreach (var k in keys)
-                mSets.Add(k, hashed[$"{k.Name}Set"]);*/
+                foreach (var v in values)
+                {
+                    var vType = v.PropertyType.GenericTypeArguments[0];
+
+                    if (k.IsSubclassOf(vType) || k == vType)
+                        mSets.Add(k, v.GetValue(Container));
+                }
         }
 
         public bool Exists<T>(T item) where T : class
@@ -129,7 +133,9 @@ namespace PermGuide.Classes
 
             try
             {
-                var rec = ans.Single();
+                result = new User(ans.Single());
+
+                /*var rec = ans.Single();
 
                 switch (rec.Status)
                 {
@@ -137,7 +143,7 @@ namespace PermGuide.Classes
                     case UserStatus.Moderator: result = new Moderator(rec); break;
                     case UserStatus.Administrator: result = new Administrator(rec); break;
                     default: throw new UserNotRegisteredException();
-                }
+                }*/
             }
             catch (InvalidOperationException)
             {

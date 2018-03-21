@@ -7,16 +7,11 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Article : IContent
+    class Article : BaseContent
     {
-        internal Article(ArticleRecord articleRecord)
+        internal Article(ArticleRecord articleRecord) :
+            base(articleRecord)
         {
-            ArticleRecord = articleRecord;
-        }
-
-        public ContentRecord GetRecord()
-        {
-            return ArticleRecord;
         }
 
         public MediaFile GetHtml()
@@ -52,11 +47,11 @@ namespace PermGuide.Classes
                    select new MediaFile(v);
         }
 
-        public string Name => ArticleRecord.Name;
+        public string Name => Record.Name;
         public IEnumerable<MediaFile> ImageUris => GetUrisByMediaType(MediaType.Image);
         public IEnumerable<MediaFile> AudioUris => GetUrisByMediaType(MediaType.Audio);
         public IEnumerable<MediaFile> VideoUris => GetUrisByMediaType(MediaType.Video);
 
-        internal ArticleRecord ArticleRecord { get; private set; }
+        internal ArticleRecord ArticleRecord => Record as ArticleRecord;
     }
 }
