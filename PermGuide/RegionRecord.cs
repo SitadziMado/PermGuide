@@ -20,7 +20,7 @@ namespace PermGuide
             this.SightRecord = new HashSet<SightRecord>();
         }
     
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SightRecord> SightRecord { get; set; }

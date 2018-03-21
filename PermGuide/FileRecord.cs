@@ -14,7 +14,7 @@ namespace PermGuide
     
     public partial class FileRecord
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Uri { get; set; }
         public MediaType MediaType { get; set; }
     

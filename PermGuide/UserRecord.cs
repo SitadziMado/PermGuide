@@ -24,7 +24,7 @@ namespace PermGuide
             this.BanStatus = new BanStatus();
         }
     
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string Nickname { get; set; }

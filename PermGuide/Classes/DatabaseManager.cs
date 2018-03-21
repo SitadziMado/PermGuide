@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,24 +20,45 @@ namespace PermGuide.Classes
             // При добавлении класса следует обновить
             mSets = new Dictionary<Type, object>
             {
-                { typeof(ArticleRecord), Container.ArticleRecordSet },
-                { typeof(ExcursionRecord), Container.ExcursionRecordSet },
+                { typeof(ArticleRecord), Container.ContentRecordSet }, // ArticleRecordSet },
+                { typeof(ExcursionRecord), Container.ContentRecordSet }, // ExcursionRecordSet },
                 { typeof(FileRecord), Container.FileRecordSet },
                 { typeof(RegionRecord), Container.RegionRecordSet },
                 { typeof(ReviewRecord), Container.ReviewRecordSet },
-                { typeof(SightRecord), Container.SightRecordSet },
+                { typeof(SightRecord), Container.ContentRecordSet }, // SightRecordSet },
                 { typeof(TimetableRecord), Container.TimetableRecordSet },
                 { typeof(UserRecord), Container.UserRecordSet },
 
-                { typeof(DbSet<ArticleRecord>), Container.ArticleRecordSet },
-                { typeof(DbSet<ExcursionRecord>), Container.ExcursionRecordSet },
+                { typeof(DbSet<ArticleRecord>), Container.ContentRecordSet }, // ArticleRecordSet },
+                { typeof(DbSet<ExcursionRecord>), Container.ContentRecordSet }, // ExcursionRecordSet },
                 { typeof(DbSet<FileRecord>), Container.FileRecordSet },
                 { typeof(DbSet<RegionRecord>), Container.RegionRecordSet },
                 { typeof(DbSet<ReviewRecord>), Container.ReviewRecordSet },
-                { typeof(DbSet<SightRecord>), Container.SightRecordSet },
+                { typeof(DbSet<SightRecord>), Container.ContentRecordSet }, // SightRecordSet },
                 { typeof(DbSet<TimetableRecord>), Container.TimetableRecordSet },
                 { typeof(DbSet<UserRecord>), Container.UserRecordSet },
             };
+
+            /*var thisAsm = Assembly.GetExecutingAssembly();
+            var contType = Container.GetType();
+
+            var keys = from v
+                       in thisAsm.DefinedTypes
+                       where v.Name != "Record" && v.Name.Contains("Record")
+                       select v;
+
+            var values = from v
+                         in contType.GetProperties()
+                         where v.Name.Contains("RecordSet")
+                         select new KeyValuePair<string, PropertyInfo>(v.Name, v);
+            
+            var hashed = new Dictionary<string, PropertyInfo>();
+
+            foreach (var v in values)
+                hashed.Add(v.Key, v.Value);
+
+            foreach (var k in keys)
+                mSets.Add(k, hashed[$"{k.Name}Set"]);*/
         }
 
         public bool Exists<T>(T item) where T : class
@@ -64,13 +87,19 @@ namespace PermGuide.Classes
         }
 
         public User Register(string login, string password, string nickname = "")
-        {
+        {            
             var userRecord = new UserRecord
             {
+                // Id = Guid.Empty,
                 Login = login,
                 Password = password.Encrypt(),
                 Nickname = nickname,
-                Status = UserStatusString
+                Status = UserStatus.User,
+                BanStatus = new BanStatus
+                {
+                    IsBanned = false,
+                    BannedTill = DateTime.Now
+                }
             };
 
             var ans = from v
@@ -78,9 +107,9 @@ namespace PermGuide.Classes
                       where v.Login == login
                       select v;
 
-            if (ans.Count() == 0)
+            if (ans.Count() != 0)
                 throw new UserNotRegisteredException();
-
+            
             Container.UserRecordSet.Add(userRecord);
             Container.SaveChanges();
 
@@ -104,9 +133,9 @@ namespace PermGuide.Classes
 
                 switch (rec.Status)
                 {
-                    case UserStatusString: result = new User(rec); break;
-                    case ModeratorStatusString: result = new Moderator(rec); break;
-                    case AdministratorStatusString: result = new Administrator(rec); break;
+                    case UserStatus.User: result = new User(rec); break;
+                    case UserStatus.Moderator: result = new Moderator(rec); break;
+                    case UserStatus.Administrator: result = new Administrator(rec); break;
                     default: throw new UserNotRegisteredException();
                 }
             }
@@ -118,11 +147,36 @@ namespace PermGuide.Classes
             return result;
         }
 
-        public IEnumerable<ArticleRecord> ArticleRecords => Container.ArticleRecordSet.AsEnumerable();
+        public void TestQueryConstructor()
+        {
+            QueryConstructor qc = new QueryConstructor(
+                "ArticleRecord",
+                "ContentRecord",
+                "ExcursionRecord",
+                "FileRecord",
+                "RegionRecord",
+                "ReviewRecord",
+                "SightRecord",
+                "TimetableRecord",
+                "UserRecord"
+            );
+
+            var root = qc.GetAttributes("UserRecord");
+
+            root.Children[1].Criterium = "sunmax1234@mail.ru";
+
+            var query = qc.Query(Container.UserRecordSet, root).ToArray();
+        }
+
+        public IEnumerable<ArticleRecord> ArticleRecords =>
+            from v
+            in Container.ContentRecordSet // ArticleRecordSet.AsEnumerable();
+            where v is ArticleRecord
+            select v as ArticleRecord;
         
-        private const string UserStatusString = "user";
+        /* private const string UserStatusString = "user";
         private const string ModeratorStatusString = "moderator";
-        private const string AdministratorStatusString = "administrator";
+        private const string AdministratorStatusString = "administrator"; */
 
         public PermGuideContainer Container { get; internal set; }
 

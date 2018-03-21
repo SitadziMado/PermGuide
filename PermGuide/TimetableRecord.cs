@@ -14,7 +14,7 @@ namespace PermGuide
     
     public partial class TimetableRecord
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public System.DateTime CreationDate { get; set; }
         public string Activities { get; set; }
     

@@ -75,9 +75,10 @@
     <Compile Include="Classes\Administrator.cs" />
     <Compile Include="Classes\Article.cs" />
     <Compile Include="Classes\Excursion.cs" />
-    <Compile Include="Classes\File.cs" />
+    <Compile Include="Classes\MediaFile.cs" />
     <Compile Include="Classes\IContent.cs" />
     <Compile Include="Classes\Moderator.cs" />
+    <Compile Include="Classes\QueryConstructor.cs" />
     <Compile Include="Classes\RecordNotValidException.cs" />
     <Compile Include="Classes\Review.cs" />
     <Compile Include="Classes\Sight.cs" />

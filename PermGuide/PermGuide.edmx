@@ -9,123 +9,149 @@
     <EntitySet Name="UserRecordSet" EntityType="PermGuide.Store.UserRecordSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReviewRecordSet" EntityType="PermGuide.Store.ReviewRecordSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FileRecordSet" EntityType="PermGuide.Store.FileRecordSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="SightRecordSet" EntityType="PermGuide.Store.SightRecordSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="ArticleRecordSet" EntityType="PermGuide.Store.ArticleRecordSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="ExcursionRecordSet" EntityType="PermGuide.Store.ExcursionRecordSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RegionRecordSet" EntityType="PermGuide.Store.RegionRecordSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TimetableRecordSet" EntityType="PermGuide.Store.TimetableRecordSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContentRecordSet" EntityType="PermGuide.Store.ContentRecordSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContentRecordSet_SightRecord" EntityType="PermGuide.Store.ContentRecordSet_SightRecord" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContentRecordSet_ArticleRecord" EntityType="PermGuide.Store.ContentRecordSet_ArticleRecord" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContentRecordSet_ExcursionRecord" EntityType="PermGuide.Store.ContentRecordSet_ExcursionRecord" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UserReview" Association="PermGuide.Store.UserReview">
       <End Role="User" EntitySet="UserRecordSet" />
       <End Role="Review" EntitySet="ReviewRecordSet" />
     </AssociationSet>
     <AssociationSet Name="RegionSight" Association="PermGuide.Store.RegionSight">
       <End Role="Region" EntitySet="RegionRecordSet" />
-      <End Role="Sight" EntitySet="SightRecordSet" />
+      <End Role="Sight" EntitySet="ContentRecordSet_SightRecord" />
     </AssociationSet>
     <AssociationSet Name="UserTimetable" Association="PermGuide.Store.UserTimetable">
       <End Role="User" EntitySet="UserRecordSet" />
       <End Role="Timetable" EntitySet="TimetableRecordSet" />
     </AssociationSet>
     <AssociationSet Name="ArticleFile" Association="PermGuide.Store.ArticleFile">
-      <End Role="Article" EntitySet="ArticleRecordSet" />
+      <End Role="Article" EntitySet="ContentRecordSet_ArticleRecord" />
       <End Role="File" EntitySet="FileRecordSet" />
     </AssociationSet>
     <AssociationSet Name="SightArticle" Association="PermGuide.Store.SightArticle">
-      <End Role="Sight" EntitySet="SightRecordSet" />
-      <End Role="Article" EntitySet="ArticleRecordSet" />
+      <End Role="Sight" EntitySet="ContentRecordSet_SightRecord" />
+      <End Role="Article" EntitySet="ContentRecordSet_ArticleRecord" />
     </AssociationSet>
     <AssociationSet Name="RegionArticle" Association="PermGuide.Store.RegionArticle">
       <End Role="Region" EntitySet="RegionRecordSet" />
-      <End Role="Article" EntitySet="ArticleRecordSet" />
+      <End Role="Article" EntitySet="ContentRecordSet_ArticleRecord" />
     </AssociationSet>
     <AssociationSet Name="ExcursionArticle" Association="PermGuide.Store.ExcursionArticle">
-      <End Role="Excursion" EntitySet="ExcursionRecordSet" />
-      <End Role="Article" EntitySet="ArticleRecordSet" />
+      <End Role="Excursion" EntitySet="ContentRecordSet_ExcursionRecord" />
+      <End Role="Article" EntitySet="ContentRecordSet_ArticleRecord" />
     </AssociationSet>
     <AssociationSet Name="ExcursionSight" Association="PermGuide.Store.ExcursionSight">
-      <End Role="Excursion" EntitySet="ExcursionRecordSet" />
-      <End Role="Sight" EntitySet="SightRecordSet" />
+      <End Role="Excursion" EntitySet="ContentRecordSet_ExcursionRecord" />
+      <End Role="Sight" EntitySet="ContentRecordSet_SightRecord" />
     </AssociationSet>
-    <AssociationSet Name="ExcursionReview" Association="PermGuide.Store.ExcursionReview">
-      <End Role="Excursion" EntitySet="ExcursionRecordSet" />
-      <End Role="Review" EntitySet="ReviewRecordSet" />
+    <AssociationSet Name="UserRecordFileRecord" Association="PermGuide.Store.UserRecordFileRecord">
+      <End Role="UserRecord" EntitySet="UserRecordSet" />
+      <End Role="FileRecord" EntitySet="FileRecordSet" />
     </AssociationSet>
-    <AssociationSet Name="SightReview" Association="PermGuide.Store.SightReview">
-      <End Role="Sight" EntitySet="SightRecordSet" />
-      <End Role="Review" EntitySet="ReviewRecordSet" />
+    <AssociationSet Name="ContentRecordReviewRecord" Association="PermGuide.Store.ContentRecordReviewRecord">
+      <End Role="ContentRecord" EntitySet="ContentRecordSet" />
+      <End Role="ReviewRecord" EntitySet="ReviewRecordSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserRecordContentRecord" Association="PermGuide.Store.UserRecordContentRecord">
+      <End Role="UserRecord" EntitySet="UserRecordSet" />
+      <End Role="ContentRecord" EntitySet="ContentRecordSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SightRecord_inherits_ContentRecord" Association="PermGuide.Store.FK_SightRecord_inherits_ContentRecord">
+      <End Role="ContentRecord" EntitySet="ContentRecordSet" />
+      <End Role="SightRecord" EntitySet="ContentRecordSet_SightRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ArticleRecord_inherits_ContentRecord" Association="PermGuide.Store.FK_ArticleRecord_inherits_ContentRecord">
+      <End Role="ContentRecord" EntitySet="ContentRecordSet" />
+      <End Role="ArticleRecord" EntitySet="ContentRecordSet_ArticleRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExcursionRecord_inherits_ContentRecord" Association="PermGuide.Store.FK_ExcursionRecord_inherits_ContentRecord">
+      <End Role="ContentRecord" EntitySet="ContentRecordSet" />
+      <End Role="ExcursionRecord" EntitySet="ContentRecordSet_ExcursionRecord" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserRecordSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Nickname" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="BanStatus_IsBanned" Type="bit" Nullable="false" />
+    <Property Name="BanStatus_BannedTill" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="ReviewRecordSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CreationDate" Type="datetime" Nullable="false" />
     <Property Name="Mark" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Excursion_Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Sight_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserRecord_Id" Type="int" Nullable="false" />
+    <Property Name="ContentRecord_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="FileRecordSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Uri" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="MediaType" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Article_Id" Type="uniqueidentifier" Nullable="false" />
-  </EntityType>
-  <EntityType Name="SightRecordSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Location" Type="geography" Nullable="false" SRID="4326" />
-    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Region_Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Article_Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Excursion_Id" Type="uniqueidentifier" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ArticleRecordSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ExcursionRecordSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Article_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="MediaType" Type="int" Nullable="false" />
+    <Property Name="ArticleRecord_Id" Type="int" Nullable="false" />
+    <Property Name="UserRecord_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="RegionRecordSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Article_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ArticleRecord_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TimetableRecordSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CreationDate" Type="datetime" Nullable="false" />
     <Property Name="Activities" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserRecord_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContentRecordSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProposalStatus" Type="int" Nullable="false" />
+    <Property Name="UserRecord_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContentRecordSet_SightRecord">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Location" Type="geography" Nullable="false" SRID="4326" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="RegionRecord_Id" Type="int" Nullable="false" />
+    <Property Name="ArticleRecord_Id" Type="int" Nullable="false" />
+    <Property Name="ExcursionRecord_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContentRecordSet_ArticleRecord">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContentRecordSet_ExcursionRecord">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ArticleRecord_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="UserReview">
     <End Role="User" Type="PermGuide.Store.UserRecordSet" Multiplicity="1" />
@@ -135,19 +161,19 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Review">
-        <PropertyRef Name="User_Id" />
+        <PropertyRef Name="UserRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="RegionSight">
     <End Role="Region" Type="PermGuide.Store.RegionRecordSet" Multiplicity="1" />
-    <End Role="Sight" Type="PermGuide.Store.SightRecordSet" Multiplicity="*" />
+    <End Role="Sight" Type="PermGuide.Store.ContentRecordSet_SightRecord" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Region">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Sight">
-        <PropertyRef Name="Region_Id" />
+        <PropertyRef Name="RegionRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -159,91 +185,145 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Timetable">
-        <PropertyRef Name="User_Id" />
+        <PropertyRef Name="UserRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="ArticleFile">
-    <End Role="Article" Type="PermGuide.Store.ArticleRecordSet" Multiplicity="1" />
+    <End Role="Article" Type="PermGuide.Store.ContentRecordSet_ArticleRecord" Multiplicity="1" />
     <End Role="File" Type="PermGuide.Store.FileRecordSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Article">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="File">
-        <PropertyRef Name="Article_Id" />
+        <PropertyRef Name="ArticleRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="SightArticle">
-    <End Role="Sight" Type="PermGuide.Store.SightRecordSet" Multiplicity="*" />
-    <End Role="Article" Type="PermGuide.Store.ArticleRecordSet" Multiplicity="1" />
+    <End Role="Sight" Type="PermGuide.Store.ContentRecordSet_SightRecord" Multiplicity="*" />
+    <End Role="Article" Type="PermGuide.Store.ContentRecordSet_ArticleRecord" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Article">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Sight">
-        <PropertyRef Name="Article_Id" />
+        <PropertyRef Name="ArticleRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="RegionArticle">
     <End Role="Region" Type="PermGuide.Store.RegionRecordSet" Multiplicity="*" />
-    <End Role="Article" Type="PermGuide.Store.ArticleRecordSet" Multiplicity="1" />
+    <End Role="Article" Type="PermGuide.Store.ContentRecordSet_ArticleRecord" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Article">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Region">
-        <PropertyRef Name="Article_Id" />
+        <PropertyRef Name="ArticleRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="ExcursionArticle">
-    <End Role="Excursion" Type="PermGuide.Store.ExcursionRecordSet" Multiplicity="*" />
-    <End Role="Article" Type="PermGuide.Store.ArticleRecordSet" Multiplicity="1" />
+    <End Role="Excursion" Type="PermGuide.Store.ContentRecordSet_ExcursionRecord" Multiplicity="*" />
+    <End Role="Article" Type="PermGuide.Store.ContentRecordSet_ArticleRecord" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Article">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Excursion">
-        <PropertyRef Name="Article_Id" />
+        <PropertyRef Name="ArticleRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="ExcursionSight">
-    <End Role="Excursion" Type="PermGuide.Store.ExcursionRecordSet" Multiplicity="1" />
-    <End Role="Sight" Type="PermGuide.Store.SightRecordSet" Multiplicity="*" />
+    <End Role="Excursion" Type="PermGuide.Store.ContentRecordSet_ExcursionRecord" Multiplicity="1" />
+    <End Role="Sight" Type="PermGuide.Store.ContentRecordSet_SightRecord" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Excursion">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Sight">
-        <PropertyRef Name="Excursion_Id" />
+        <PropertyRef Name="ExcursionRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ExcursionReview">
-    <End Role="Excursion" Type="PermGuide.Store.ExcursionRecordSet" Multiplicity="1" />
-    <End Role="Review" Type="PermGuide.Store.ReviewRecordSet" Multiplicity="*" />
+  <Association Name="UserRecordFileRecord">
+    <End Role="UserRecord" Type="PermGuide.Store.UserRecordSet" Multiplicity="1" />
+    <End Role="FileRecord" Type="PermGuide.Store.FileRecordSet" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Excursion">
+      <Principal Role="UserRecord">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Review">
-        <PropertyRef Name="Excursion_Id" />
+      <Dependent Role="FileRecord">
+        <PropertyRef Name="UserRecord_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SightReview">
-    <End Role="Sight" Type="PermGuide.Store.SightRecordSet" Multiplicity="1" />
-    <End Role="Review" Type="PermGuide.Store.ReviewRecordSet" Multiplicity="*" />
+  <Association Name="ContentRecordReviewRecord">
+    <End Role="ContentRecord" Type="PermGuide.Store.ContentRecordSet" Multiplicity="1" />
+    <End Role="ReviewRecord" Type="PermGuide.Store.ReviewRecordSet" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Sight">
+      <Principal Role="ContentRecord">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Review">
-        <PropertyRef Name="Sight_Id" />
+      <Dependent Role="ReviewRecord">
+        <PropertyRef Name="ContentRecord_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserRecordContentRecord">
+    <End Role="UserRecord" Type="PermGuide.Store.UserRecordSet" Multiplicity="1" />
+    <End Role="ContentRecord" Type="PermGuide.Store.ContentRecordSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserRecord">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContentRecord">
+        <PropertyRef Name="UserRecord_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SightRecord_inherits_ContentRecord">
+    <End Role="ContentRecord" Type="PermGuide.Store.ContentRecordSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="SightRecord" Type="PermGuide.Store.ContentRecordSet_SightRecord" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ContentRecord">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SightRecord">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ArticleRecord_inherits_ContentRecord">
+    <End Role="ContentRecord" Type="PermGuide.Store.ContentRecordSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ArticleRecord" Type="PermGuide.Store.ContentRecordSet_ArticleRecord" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ContentRecord">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ArticleRecord">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExcursionRecord_inherits_ContentRecord">
+    <End Role="ContentRecord" Type="PermGuide.Store.ContentRecordSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ExcursionRecord" Type="PermGuide.Store.ContentRecordSet_ExcursionRecord" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ContentRecord">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ExcursionRecord">
+        <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -310,7 +390,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Login" Type="String" Nullable="false" />
           <Property Name="Password" Type="String" Nullable="false" cg:SetterAccess="Public" />
           <Property Name="Nickname" Type="String" Nullable="false" cg:SetterAccess="Public" />
@@ -328,7 +408,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" cg:SetterAccess="Public" />
           <Property Name="Mark" Type="String" Nullable="false" />
           <NavigationProperty Name="UserRecord" Relationship="PermGuide.UserReview" FromRole="Review" ToRole="User" />
@@ -338,7 +418,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Uri" Type="String" Nullable="false" />
           <Property Name="MediaType" Type="PermGuide.MediaType" Nullable="false" />
           <NavigationProperty Name="ArticleRecord" Relationship="PermGuide.ArticleFile" FromRole="File" ToRole="Article" />
@@ -368,7 +448,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="SightRecord" Relationship="PermGuide.RegionSight" FromRole="Region" ToRole="Sight" />
           <NavigationProperty Name="ArticleRecord" Relationship="PermGuide.RegionArticle" FromRole="Region" ToRole="Article" />
         </EntityType>
@@ -376,7 +456,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" cg:SetterAccess="Public" />
           <NavigationProperty Name="UserRecord" Relationship="PermGuide.UserTimetable" FromRole="Timetable" ToRole="User" />
           <Property Name="Activities" Type="String" Nullable="false" />
@@ -430,7 +510,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="ReviewRecord" Relationship="PermGuide.ContentRecordReviewRecord" FromRole="ContentRecord" ToRole="ReviewRecord" />
           <NavigationProperty Name="UserRecord" Relationship="PermGuide.UserRecordContentRecord" FromRole="ContentRecord" ToRole="UserRecord" />
@@ -470,6 +550,10 @@
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Nickname" ColumnName="Nickname" />
           <ScalarProperty Name="Status" ColumnName="Status" />
+          <ComplexProperty Name="BanStatus" TypeName="PermGuide.BanStatus">
+            <ScalarProperty Name="IsBanned" ColumnName="BanStatus_IsBanned" />
+            <ScalarProperty Name="BannedTill" ColumnName="BanStatus_BannedTill" />
+          </ComplexProperty>
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -507,59 +591,120 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ContentRecordSet">
+      <EntityTypeMapping TypeName="IsTypeOf(PermGuide.ContentRecord)">
+        <MappingFragment StoreEntitySet="ContentRecordSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ProposalStatus" ColumnName="ProposalStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(PermGuide.SightRecord)">
+        <MappingFragment StoreEntitySet="ContentRecordSet_SightRecord">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(PermGuide.ArticleRecord)">
+        <MappingFragment StoreEntitySet="ContentRecordSet_ArticleRecord">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(PermGuide.ExcursionRecord)">
+        <MappingFragment StoreEntitySet="ContentRecordSet_ExcursionRecord">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="UserReview" TypeName="PermGuide.UserReview" StoreEntitySet="ReviewRecordSet">
       <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="User_Id" />
+        <ScalarProperty Name="Id" ColumnName="UserRecord_Id" />
       </EndProperty>
       <EndProperty Name="Review">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="RegionSight" TypeName="PermGuide.RegionSight" StoreEntitySet="ContentRecordSet_SightRecord">
+      <EndProperty Name="Region">
+        <ScalarProperty Name="Id" ColumnName="RegionRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="Sight">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
     <AssociationSetMapping Name="UserTimetable" TypeName="PermGuide.UserTimetable" StoreEntitySet="TimetableRecordSet">
       <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="User_Id" />
+        <ScalarProperty Name="Id" ColumnName="UserRecord_Id" />
       </EndProperty>
       <EndProperty Name="Timetable">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-          <AssociationSetMapping Name="ArticleFile" TypeName="PermGuide.ArticleFile" StoreEntitySet="FileRecordSet">
-            <EndProperty Name="File">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RegionArticle" TypeName="PermGuide.RegionArticle" StoreEntitySet="RegionRecordSet">
-            <EndProperty Name="Region">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="ContentRecordSet">
-            <EntityTypeMapping TypeName="IsTypeOf(PermGuide.ArticleRecord)" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-              <MappingFragment StoreEntitySet="ArticleRecordSet">
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(PermGuide.SightRecord)" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-              <MappingFragment StoreEntitySet="SightRecordSet">
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(PermGuide.ExcursionRecord)" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-              <MappingFragment StoreEntitySet="ExcursionRecordSet">
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="RegionSight" TypeName="PermGuide.RegionSight" StoreEntitySet="SightRecordSet">
-            <EndProperty Name="Region">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="SightArticle" TypeName="PermGuide.SightArticle" StoreEntitySet="SightRecordSet">
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ExcursionArticle" TypeName="PermGuide.ExcursionArticle" StoreEntitySet="ExcursionRecordSet">
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ExcursionSight" TypeName="PermGuide.ExcursionSight" StoreEntitySet="SightRecordSet">
-          </AssociationSetMapping>
+    <AssociationSetMapping Name="ArticleFile" TypeName="PermGuide.ArticleFile" StoreEntitySet="FileRecordSet">
+      <EndProperty Name="Article">
+        <ScalarProperty Name="Id" ColumnName="ArticleRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="File">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SightArticle" TypeName="PermGuide.SightArticle" StoreEntitySet="ContentRecordSet_SightRecord">
+      <EndProperty Name="Article">
+        <ScalarProperty Name="Id" ColumnName="ArticleRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="Sight">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RegionArticle" TypeName="PermGuide.RegionArticle" StoreEntitySet="RegionRecordSet">
+      <EndProperty Name="Article">
+        <ScalarProperty Name="Id" ColumnName="ArticleRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="Region">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ExcursionArticle" TypeName="PermGuide.ExcursionArticle" StoreEntitySet="ContentRecordSet_ExcursionRecord">
+      <EndProperty Name="Article">
+        <ScalarProperty Name="Id" ColumnName="ArticleRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="Excursion">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ExcursionSight" TypeName="PermGuide.ExcursionSight" StoreEntitySet="ContentRecordSet_SightRecord">
+      <EndProperty Name="Excursion">
+        <ScalarProperty Name="Id" ColumnName="ExcursionRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="Sight">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserRecordFileRecord" TypeName="PermGuide.UserRecordFileRecord" StoreEntitySet="FileRecordSet">
+      <EndProperty Name="UserRecord">
+        <ScalarProperty Name="Id" ColumnName="UserRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="FileRecord">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ContentRecordReviewRecord" TypeName="PermGuide.ContentRecordReviewRecord" StoreEntitySet="ReviewRecordSet">
+      <EndProperty Name="ContentRecord">
+        <ScalarProperty Name="Id" ColumnName="ContentRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="ReviewRecord">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserRecordContentRecord" TypeName="PermGuide.UserRecordContentRecord" StoreEntitySet="ContentRecordSet">
+      <EndProperty Name="UserRecord">
+        <ScalarProperty Name="Id" ColumnName="UserRecord_Id" />
+      </EndProperty>
+      <EndProperty Name="ContentRecord">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2018 00:26:54
+-- Date Created: 03/21/2018 05:07:44
 -- Generated from EDMX file: C:\Users\Максим\Documents\Visual Studio 2017\Projects\PermGuide\PermGuide\PermGuide.edmx
 -- --------------------------------------------------
 
@@ -21,7 +21,7 @@ IF OBJECT_ID(N'[dbo].[FK_UserReview]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ReviewRecordSet] DROP CONSTRAINT [FK_UserReview];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RegionSight]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[SightRecordSet] DROP CONSTRAINT [FK_RegionSight];
+    ALTER TABLE [dbo].[ContentRecordSet_SightRecord] DROP CONSTRAINT [FK_RegionSight];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserTimetable]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[TimetableRecordSet] DROP CONSTRAINT [FK_UserTimetable];
@@ -30,22 +30,34 @@ IF OBJECT_ID(N'[dbo].[FK_ArticleFile]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[FileRecordSet] DROP CONSTRAINT [FK_ArticleFile];
 GO
 IF OBJECT_ID(N'[dbo].[FK_SightArticle]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[SightRecordSet] DROP CONSTRAINT [FK_SightArticle];
+    ALTER TABLE [dbo].[ContentRecordSet_SightRecord] DROP CONSTRAINT [FK_SightArticle];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RegionArticle]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RegionRecordSet] DROP CONSTRAINT [FK_RegionArticle];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ExcursionArticle]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ExcursionRecordSet] DROP CONSTRAINT [FK_ExcursionArticle];
+    ALTER TABLE [dbo].[ContentRecordSet_ExcursionRecord] DROP CONSTRAINT [FK_ExcursionArticle];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ExcursionSight]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[SightRecordSet] DROP CONSTRAINT [FK_ExcursionSight];
+    ALTER TABLE [dbo].[ContentRecordSet_SightRecord] DROP CONSTRAINT [FK_ExcursionSight];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ExcursionReview]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReviewRecordSet] DROP CONSTRAINT [FK_ExcursionReview];
+IF OBJECT_ID(N'[dbo].[FK_UserRecordFileRecord]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FileRecordSet] DROP CONSTRAINT [FK_UserRecordFileRecord];
 GO
-IF OBJECT_ID(N'[dbo].[FK_SightReview]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReviewRecordSet] DROP CONSTRAINT [FK_SightReview];
+IF OBJECT_ID(N'[dbo].[FK_ContentRecordReviewRecord]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReviewRecordSet] DROP CONSTRAINT [FK_ContentRecordReviewRecord];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserRecordContentRecord]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContentRecordSet] DROP CONSTRAINT [FK_UserRecordContentRecord];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SightRecord_inherits_ContentRecord]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContentRecordSet_SightRecord] DROP CONSTRAINT [FK_SightRecord_inherits_ContentRecord];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ArticleRecord_inherits_ContentRecord]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContentRecordSet_ArticleRecord] DROP CONSTRAINT [FK_ArticleRecord_inherits_ContentRecord];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ExcursionRecord_inherits_ContentRecord]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContentRecordSet_ExcursionRecord] DROP CONSTRAINT [FK_ExcursionRecord_inherits_ContentRecord];
 GO
 
 -- --------------------------------------------------
@@ -61,20 +73,23 @@ GO
 IF OBJECT_ID(N'[dbo].[FileRecordSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[FileRecordSet];
 GO
-IF OBJECT_ID(N'[dbo].[SightRecordSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[SightRecordSet];
-GO
-IF OBJECT_ID(N'[dbo].[ArticleRecordSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ArticleRecordSet];
-GO
-IF OBJECT_ID(N'[dbo].[ExcursionRecordSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ExcursionRecordSet];
-GO
 IF OBJECT_ID(N'[dbo].[RegionRecordSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RegionRecordSet];
 GO
 IF OBJECT_ID(N'[dbo].[TimetableRecordSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[TimetableRecordSet];
+GO
+IF OBJECT_ID(N'[dbo].[ContentRecordSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ContentRecordSet];
+GO
+IF OBJECT_ID(N'[dbo].[ContentRecordSet_SightRecord]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ContentRecordSet_SightRecord];
+GO
+IF OBJECT_ID(N'[dbo].[ContentRecordSet_ArticleRecord]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ContentRecordSet_ArticleRecord];
+GO
+IF OBJECT_ID(N'[dbo].[ContentRecordSet_ExcursionRecord]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ContentRecordSet_ExcursionRecord];
 GO
 
 -- --------------------------------------------------
@@ -83,73 +98,82 @@ GO
 
 -- Creating table 'UserRecordSet'
 CREATE TABLE [dbo].[UserRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
+    [Id] int IDENTITY(1,1) NOT NULL,
     [Login] nvarchar(max)  NOT NULL,
     [Password] nvarchar(max)  NOT NULL,
     [Nickname] nvarchar(max)  NOT NULL,
-    [Status] nvarchar(max)  NOT NULL
+    [Status] int  NOT NULL,
+    [BanStatus_IsBanned] bit  NOT NULL,
+    [BanStatus_BannedTill] datetime  NOT NULL
 );
 GO
 
 -- Creating table 'ReviewRecordSet'
 CREATE TABLE [dbo].[ReviewRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
+    [Id] int IDENTITY(1,1) NOT NULL,
     [CreationDate] datetime  NOT NULL,
     [Mark] nvarchar(max)  NOT NULL,
-    [User_Id] uniqueidentifier  NOT NULL,
-    [Excursion_Id] uniqueidentifier  NOT NULL,
-    [Sight_Id] uniqueidentifier  NOT NULL
+    [UserRecord_Id] int  NOT NULL,
+    [ContentRecord_Id] int  NOT NULL
 );
 GO
 
 -- Creating table 'FileRecordSet'
 CREATE TABLE [dbo].[FileRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
+    [Id] int IDENTITY(1,1) NOT NULL,
     [Uri] nvarchar(max)  NOT NULL,
-    [MediaType] nvarchar(max)  NOT NULL,
-    [Article_Id] uniqueidentifier  NOT NULL
-);
-GO
-
--- Creating table 'SightRecordSet'
-CREATE TABLE [dbo].[SightRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [Location] geography  NOT NULL,
-    [Address] nvarchar(max)  NOT NULL,
-    [Region_Id] uniqueidentifier  NOT NULL,
-    [Article_Id] uniqueidentifier  NOT NULL,
-    [Excursion_Id] uniqueidentifier  NOT NULL
-);
-GO
-
--- Creating table 'ArticleRecordSet'
-CREATE TABLE [dbo].[ArticleRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
-);
-GO
-
--- Creating table 'ExcursionRecordSet'
-CREATE TABLE [dbo].[ExcursionRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Article_Id] uniqueidentifier  NOT NULL
+    [MediaType] int  NOT NULL,
+    [ArticleRecord_Id] int  NOT NULL,
+    [UserRecord_Id] int  NOT NULL
 );
 GO
 
 -- Creating table 'RegionRecordSet'
 CREATE TABLE [dbo].[RegionRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Article_Id] uniqueidentifier  NOT NULL
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ArticleRecord_Id] int  NOT NULL
 );
 GO
 
 -- Creating table 'TimetableRecordSet'
 CREATE TABLE [dbo].[TimetableRecordSet] (
-    [Id] uniqueidentifier  NOT NULL,
+    [Id] int IDENTITY(1,1) NOT NULL,
     [CreationDate] datetime  NOT NULL,
     [Activities] nvarchar(max)  NOT NULL,
-    [User_Id] uniqueidentifier  NOT NULL
+    [UserRecord_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'ContentRecordSet'
+CREATE TABLE [dbo].[ContentRecordSet] (
+    [Id] int  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [ProposalStatus] int  NOT NULL,
+    [UserRecord_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'ContentRecordSet_SightRecord'
+CREATE TABLE [dbo].[ContentRecordSet_SightRecord] (
+    [Location] geography  NOT NULL,
+    [Address] nvarchar(max)  NOT NULL,
+    [Id] int  NOT NULL,
+    [RegionRecord_Id] int  NOT NULL,
+    [ArticleRecord_Id] int  NOT NULL,
+    [ExcursionRecord_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'ContentRecordSet_ArticleRecord'
+CREATE TABLE [dbo].[ContentRecordSet_ArticleRecord] (
+    [Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'ContentRecordSet_ExcursionRecord'
+CREATE TABLE [dbo].[ContentRecordSet_ExcursionRecord] (
+    [Id] int  NOT NULL,
+    [ArticleRecord_Id] int  NOT NULL
 );
 GO
 
@@ -175,24 +199,6 @@ ADD CONSTRAINT [PK_FileRecordSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'SightRecordSet'
-ALTER TABLE [dbo].[SightRecordSet]
-ADD CONSTRAINT [PK_SightRecordSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'ArticleRecordSet'
-ALTER TABLE [dbo].[ArticleRecordSet]
-ADD CONSTRAINT [PK_ArticleRecordSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'ExcursionRecordSet'
-ALTER TABLE [dbo].[ExcursionRecordSet]
-ADD CONSTRAINT [PK_ExcursionRecordSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'RegionRecordSet'
 ALTER TABLE [dbo].[RegionRecordSet]
 ADD CONSTRAINT [PK_RegionRecordSet]
@@ -205,14 +211,38 @@ ADD CONSTRAINT [PK_TimetableRecordSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'ContentRecordSet'
+ALTER TABLE [dbo].[ContentRecordSet]
+ADD CONSTRAINT [PK_ContentRecordSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ContentRecordSet_SightRecord'
+ALTER TABLE [dbo].[ContentRecordSet_SightRecord]
+ADD CONSTRAINT [PK_ContentRecordSet_SightRecord]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ContentRecordSet_ArticleRecord'
+ALTER TABLE [dbo].[ContentRecordSet_ArticleRecord]
+ADD CONSTRAINT [PK_ContentRecordSet_ArticleRecord]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ContentRecordSet_ExcursionRecord'
+ALTER TABLE [dbo].[ContentRecordSet_ExcursionRecord]
+ADD CONSTRAINT [PK_ContentRecordSet_ExcursionRecord]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [User_Id] in table 'ReviewRecordSet'
+-- Creating foreign key on [UserRecord_Id] in table 'ReviewRecordSet'
 ALTER TABLE [dbo].[ReviewRecordSet]
 ADD CONSTRAINT [FK_UserReview]
-    FOREIGN KEY ([User_Id])
+    FOREIGN KEY ([UserRecord_Id])
     REFERENCES [dbo].[UserRecordSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -221,13 +251,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_UserReview'
 CREATE INDEX [IX_FK_UserReview]
 ON [dbo].[ReviewRecordSet]
-    ([User_Id]);
+    ([UserRecord_Id]);
 GO
 
--- Creating foreign key on [Region_Id] in table 'SightRecordSet'
-ALTER TABLE [dbo].[SightRecordSet]
+-- Creating foreign key on [RegionRecord_Id] in table 'ContentRecordSet_SightRecord'
+ALTER TABLE [dbo].[ContentRecordSet_SightRecord]
 ADD CONSTRAINT [FK_RegionSight]
-    FOREIGN KEY ([Region_Id])
+    FOREIGN KEY ([RegionRecord_Id])
     REFERENCES [dbo].[RegionRecordSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -235,14 +265,14 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RegionSight'
 CREATE INDEX [IX_FK_RegionSight]
-ON [dbo].[SightRecordSet]
-    ([Region_Id]);
+ON [dbo].[ContentRecordSet_SightRecord]
+    ([RegionRecord_Id]);
 GO
 
--- Creating foreign key on [User_Id] in table 'TimetableRecordSet'
+-- Creating foreign key on [UserRecord_Id] in table 'TimetableRecordSet'
 ALTER TABLE [dbo].[TimetableRecordSet]
 ADD CONSTRAINT [FK_UserTimetable]
-    FOREIGN KEY ([User_Id])
+    FOREIGN KEY ([UserRecord_Id])
     REFERENCES [dbo].[UserRecordSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -251,14 +281,14 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_UserTimetable'
 CREATE INDEX [IX_FK_UserTimetable]
 ON [dbo].[TimetableRecordSet]
-    ([User_Id]);
+    ([UserRecord_Id]);
 GO
 
--- Creating foreign key on [Article_Id] in table 'FileRecordSet'
+-- Creating foreign key on [ArticleRecord_Id] in table 'FileRecordSet'
 ALTER TABLE [dbo].[FileRecordSet]
 ADD CONSTRAINT [FK_ArticleFile]
-    FOREIGN KEY ([Article_Id])
-    REFERENCES [dbo].[ArticleRecordSet]
+    FOREIGN KEY ([ArticleRecord_Id])
+    REFERENCES [dbo].[ContentRecordSet_ArticleRecord]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -266,29 +296,29 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_ArticleFile'
 CREATE INDEX [IX_FK_ArticleFile]
 ON [dbo].[FileRecordSet]
-    ([Article_Id]);
+    ([ArticleRecord_Id]);
 GO
 
--- Creating foreign key on [Article_Id] in table 'SightRecordSet'
-ALTER TABLE [dbo].[SightRecordSet]
+-- Creating foreign key on [ArticleRecord_Id] in table 'ContentRecordSet_SightRecord'
+ALTER TABLE [dbo].[ContentRecordSet_SightRecord]
 ADD CONSTRAINT [FK_SightArticle]
-    FOREIGN KEY ([Article_Id])
-    REFERENCES [dbo].[ArticleRecordSet]
+    FOREIGN KEY ([ArticleRecord_Id])
+    REFERENCES [dbo].[ContentRecordSet_ArticleRecord]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_SightArticle'
 CREATE INDEX [IX_FK_SightArticle]
-ON [dbo].[SightRecordSet]
-    ([Article_Id]);
+ON [dbo].[ContentRecordSet_SightRecord]
+    ([ArticleRecord_Id]);
 GO
 
--- Creating foreign key on [Article_Id] in table 'RegionRecordSet'
+-- Creating foreign key on [ArticleRecord_Id] in table 'RegionRecordSet'
 ALTER TABLE [dbo].[RegionRecordSet]
 ADD CONSTRAINT [FK_RegionArticle]
-    FOREIGN KEY ([Article_Id])
-    REFERENCES [dbo].[ArticleRecordSet]
+    FOREIGN KEY ([ArticleRecord_Id])
+    REFERENCES [dbo].[ContentRecordSet_ArticleRecord]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -296,67 +326,109 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_RegionArticle'
 CREATE INDEX [IX_FK_RegionArticle]
 ON [dbo].[RegionRecordSet]
-    ([Article_Id]);
+    ([ArticleRecord_Id]);
 GO
 
--- Creating foreign key on [Article_Id] in table 'ExcursionRecordSet'
-ALTER TABLE [dbo].[ExcursionRecordSet]
+-- Creating foreign key on [ArticleRecord_Id] in table 'ContentRecordSet_ExcursionRecord'
+ALTER TABLE [dbo].[ContentRecordSet_ExcursionRecord]
 ADD CONSTRAINT [FK_ExcursionArticle]
-    FOREIGN KEY ([Article_Id])
-    REFERENCES [dbo].[ArticleRecordSet]
+    FOREIGN KEY ([ArticleRecord_Id])
+    REFERENCES [dbo].[ContentRecordSet_ArticleRecord]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ExcursionArticle'
 CREATE INDEX [IX_FK_ExcursionArticle]
-ON [dbo].[ExcursionRecordSet]
-    ([Article_Id]);
+ON [dbo].[ContentRecordSet_ExcursionRecord]
+    ([ArticleRecord_Id]);
 GO
 
--- Creating foreign key on [Excursion_Id] in table 'SightRecordSet'
-ALTER TABLE [dbo].[SightRecordSet]
+-- Creating foreign key on [ExcursionRecord_Id] in table 'ContentRecordSet_SightRecord'
+ALTER TABLE [dbo].[ContentRecordSet_SightRecord]
 ADD CONSTRAINT [FK_ExcursionSight]
-    FOREIGN KEY ([Excursion_Id])
-    REFERENCES [dbo].[ExcursionRecordSet]
+    FOREIGN KEY ([ExcursionRecord_Id])
+    REFERENCES [dbo].[ContentRecordSet_ExcursionRecord]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ExcursionSight'
 CREATE INDEX [IX_FK_ExcursionSight]
-ON [dbo].[SightRecordSet]
-    ([Excursion_Id]);
+ON [dbo].[ContentRecordSet_SightRecord]
+    ([ExcursionRecord_Id]);
 GO
 
--- Creating foreign key on [Excursion_Id] in table 'ReviewRecordSet'
-ALTER TABLE [dbo].[ReviewRecordSet]
-ADD CONSTRAINT [FK_ExcursionReview]
-    FOREIGN KEY ([Excursion_Id])
-    REFERENCES [dbo].[ExcursionRecordSet]
+-- Creating foreign key on [UserRecord_Id] in table 'FileRecordSet'
+ALTER TABLE [dbo].[FileRecordSet]
+ADD CONSTRAINT [FK_UserRecordFileRecord]
+    FOREIGN KEY ([UserRecord_Id])
+    REFERENCES [dbo].[UserRecordSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_ExcursionReview'
-CREATE INDEX [IX_FK_ExcursionReview]
-ON [dbo].[ReviewRecordSet]
-    ([Excursion_Id]);
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserRecordFileRecord'
+CREATE INDEX [IX_FK_UserRecordFileRecord]
+ON [dbo].[FileRecordSet]
+    ([UserRecord_Id]);
 GO
 
--- Creating foreign key on [Sight_Id] in table 'ReviewRecordSet'
+-- Creating foreign key on [ContentRecord_Id] in table 'ReviewRecordSet'
 ALTER TABLE [dbo].[ReviewRecordSet]
-ADD CONSTRAINT [FK_SightReview]
-    FOREIGN KEY ([Sight_Id])
-    REFERENCES [dbo].[SightRecordSet]
+ADD CONSTRAINT [FK_ContentRecordReviewRecord]
+    FOREIGN KEY ([ContentRecord_Id])
+    REFERENCES [dbo].[ContentRecordSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_SightReview'
-CREATE INDEX [IX_FK_SightReview]
+-- Creating non-clustered index for FOREIGN KEY 'FK_ContentRecordReviewRecord'
+CREATE INDEX [IX_FK_ContentRecordReviewRecord]
 ON [dbo].[ReviewRecordSet]
-    ([Sight_Id]);
+    ([ContentRecord_Id]);
+GO
+
+-- Creating foreign key on [UserRecord_Id] in table 'ContentRecordSet'
+ALTER TABLE [dbo].[ContentRecordSet]
+ADD CONSTRAINT [FK_UserRecordContentRecord]
+    FOREIGN KEY ([UserRecord_Id])
+    REFERENCES [dbo].[UserRecordSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserRecordContentRecord'
+CREATE INDEX [IX_FK_UserRecordContentRecord]
+ON [dbo].[ContentRecordSet]
+    ([UserRecord_Id]);
+GO
+
+-- Creating foreign key on [Id] in table 'ContentRecordSet_SightRecord'
+ALTER TABLE [dbo].[ContentRecordSet_SightRecord]
+ADD CONSTRAINT [FK_SightRecord_inherits_ContentRecord]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ContentRecordSet]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'ContentRecordSet_ArticleRecord'
+ALTER TABLE [dbo].[ContentRecordSet_ArticleRecord]
+ADD CONSTRAINT [FK_ArticleRecord_inherits_ContentRecord]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ContentRecordSet]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'ContentRecordSet_ExcursionRecord'
+ALTER TABLE [dbo].[ContentRecordSet_ExcursionRecord]
+ADD CONSTRAINT [FK_ExcursionRecord_inherits_ContentRecord]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ContentRecordSet]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------

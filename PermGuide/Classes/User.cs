@@ -41,7 +41,7 @@ namespace PermGuide.Classes
         {
             ReviewRecord record = new ReviewRecord
             {
-                Id = Guid.NewGuid(),
+                // Id = Guid.NewGuid(),
                 CreationDate = DateTime.Now,
                 Mark = $"{mark}: {comment}",
                 UserRecord = UserRecord,
@@ -56,7 +56,7 @@ namespace PermGuide.Classes
         {
             var record = content.GetRecord();
 
-            record.Id = Guid.NewGuid();
+            // record.Id = Guid.NewGuid();
             record.ProposalStatus = ProposalStatus.Proposed;
             record.UserRecord = UserRecord;
 

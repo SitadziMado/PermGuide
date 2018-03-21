@@ -20,7 +20,7 @@ namespace PermGuide
             this.ReviewRecord = new HashSet<ReviewRecord>();
         }
     
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public ProposalStatus ProposalStatus { get; set; }
     

@@ -18,7 +18,7 @@ namespace PermGuide.Classes
         {
             var record = content.GetRecord();
 
-            record.Id = Guid.NewGuid();
+            // record.Id = Guid.NewGuid();
             record.ProposalStatus = ProposalStatus.Added;
             record.UserRecord = UserRecord;
 

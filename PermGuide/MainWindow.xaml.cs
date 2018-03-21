@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PermGuide.Classes;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -26,7 +27,9 @@ namespace PermGuide
         {
             InitializeComponent();
             var container = new PermGuideContainer();
-            var manager = new DBManager();
+            var manager = new DatabaseManager();
+
+            manager.TestQueryConstructor();
         }
     }
 }
