@@ -9,8 +9,8 @@ namespace PermGuide.Classes
 {
     class Article : BaseContent
     {
-        internal Article(ArticleRecord articleRecord) :
-            base(articleRecord)
+        internal Article(DatabaseManager man, ArticleRecord articleRecord) :
+            base(man, articleRecord)
         {
         }
 
@@ -19,6 +19,7 @@ namespace PermGuide.Classes
             try
             {
                 return new MediaFile(
+                    Manager, 
                     (
                         from v
                         in ArticleRecord.FileRecord
@@ -44,7 +45,7 @@ namespace PermGuide.Classes
             return from v
                    in ArticleRecord.FileRecord
                    where v.MediaType == mediaType
-                   select new MediaFile(v);
+                   select new MediaFile(Manager, v);
         }
 
         public string Name => Record.Name;

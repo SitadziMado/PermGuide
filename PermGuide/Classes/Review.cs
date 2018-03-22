@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Review
+    class Review : BaseDatabaseObject
     {
-        internal Review(ReviewRecord reviewRecord)
+        internal Review(DatabaseManager man, ReviewRecord reviewRecord) :
+            base(man)
         {
             ReviewRecord = reviewRecord;
         }

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class MediaFile
+    class MediaFile : BaseDatabaseObject
     {
-        internal MediaFile(FileRecord fileRecord)
+        internal MediaFile(DatabaseManager man, FileRecord fileRecord) :
+            base(man)
         {
             FileRecord = fileRecord;
         }

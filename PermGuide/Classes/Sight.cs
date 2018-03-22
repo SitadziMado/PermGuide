@@ -9,8 +9,8 @@ namespace PermGuide.Classes
 {
     class Sight : BaseContent
     {
-        internal Sight(SightRecord sightRecord) :
-            base(sightRecord)
+        internal Sight(DatabaseManager man, SightRecord sightRecord) :
+            base(man, sightRecord)
         {
 
         }

@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    abstract class BaseContent
+    abstract class BaseContent : BaseDatabaseObject
     {
-        public BaseContent(ContentRecord contentRecord)
+        public BaseContent(
+            DatabaseManager man, 
+            ContentRecord contentRecord
+        ) : base(man)
         {
             Record = contentRecord;
         }
 
-        public void Review(User sender, int mark, string comment)
+        public BaseContent Review(User sender, int mark, string comment)
         {
             ReviewRecord record = new ReviewRecord
             {
@@ -25,10 +28,11 @@ namespace PermGuide.Classes
             };
 
             sender.Manager.Container.ReviewRecordSet.Add(record);
-            sender.SaveChanges();
+
+            return this;
         }
 
-        public void Propose(User sender, BaseContent content)
+        public BaseContent Propose(User sender, BaseContent content)
         {
             if (!sender.IsModerator)
                 throw new AccessDeniedException();
@@ -40,10 +44,11 @@ namespace PermGuide.Classes
             record.UserRecord = sender.UserRecord;
 
             sender.Manager.Container.ContentRecordSet.Add(record);
-            sender.SaveChanges();
+
+            return this;
         }
 
-        public void Add(User sender, BaseContent content)
+        public BaseContent Add(User sender, BaseContent content)
         {
             if (!sender.IsModerator)
                 throw new AccessDeniedException();
@@ -55,10 +60,11 @@ namespace PermGuide.Classes
             record.UserRecord = sender.UserRecord;
 
             sender.Manager.Container.ContentRecordSet.Add(record);
-            sender.SaveChanges();
+
+            return this;
         }
 
-        public void Process(User sender, BaseContent content, ProposalStatus status)
+        public BaseContent Process(User sender, BaseContent content, ProposalStatus status)
         {
             if (!sender.IsModerator)
                 throw new AccessDeniedException();
@@ -66,7 +72,8 @@ namespace PermGuide.Classes
             var record = Record;
 
             record.ProposalStatus = status;
-            sender.SaveChanges();
+
+            return this;
         }
 
         internal ContentRecord Record { get; set; }

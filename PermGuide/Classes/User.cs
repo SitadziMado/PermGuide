@@ -7,23 +7,31 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class User
+    class User : BaseDatabaseObject
     {
-        internal User(UserRecord userRecord)
+        internal User(DatabaseManager man, UserRecord userRecord) : 
+            base(man)
         {
             UserRecord = userRecord;
         }
 
-        public void UpdateData(string login, string password, string nickname)
+        public User SetLogin(string value)
         {
-            if (!Valid)
-                throw new RecordNotValidException();
+            UserRecord.Login = value;
+            return this;
+        }
+        
+        public User SetPassword(string value)
+        {
+            UserRecord.Password = value.Encrypt();
+            return this;
+        }
 
-            UserRecord.Login = login;
-            UserRecord.Password = password.Encrypt();
-            UserRecord.Nickname = nickname;
+        public User SetNickname(string value)
+        {
+            UserRecord.Nickname = value;
 
-            SaveChanges();
+            return this;
         }
 
         public HashSet<Article> GetArticles()
@@ -37,23 +45,25 @@ namespace PermGuide.Classes
 
         public HashSet<Timetable> GetTimetables() => GetHashSetOfRecords<Timetable, TimetableRecord>();
 
-        public void ChangeStatus(User other, UserStatus status)
+        public User ChangeStatus(User other, UserStatus status)
         {
             if (!IsAdmin)
                 throw new AccessDeniedException();
 
             other.UserRecord.Status = status;
-            SaveChanges();
+
+            return this;
         }
 
-        public void Ban(User other, DateTime tillWhen)
+        public User Ban(User other, DateTime tillWhen)
         {
             if (!IsAdmin)
                 throw new AccessDeniedException();
 
             other.UserRecord.BanStatus.IsBanned = true;
             other.UserRecord.BanStatus.BannedTill = tillWhen;
-            SaveChanges();
+
+            return this;
         }
 
         public HashSet<Review> GetComplaints()
@@ -66,11 +76,6 @@ namespace PermGuide.Classes
 
         public bool Owns(BaseContent content)
             => UserRecord == content.Record.UserRecord;
-
-        public void SaveChanges()
-        {
-            Manager.Container.SaveChanges();
-        }
 
         private HashSet<T> GetHashSetOfRecords<T, U>()
             where T : class
@@ -102,15 +107,9 @@ namespace PermGuide.Classes
             return result;
         }
 
-        public static readonly User Empty = 
-            new User(new UserRecord { Login = "undefined", Password = "undefined" });
-
         public bool IsAdmin => Status == UserStatus.Administrator;
         public bool IsModerator => IsAdmin || Status == UserStatus.Moderator;
-        public DatabaseManager Manager { get; set; }
         public UserStatus Status => UserRecord.Status;
         internal UserRecord UserRecord { get; private set; }
-
-        public bool Valid => Manager.Container.UserRecordSet.Contains(UserRecord);
     }
 }

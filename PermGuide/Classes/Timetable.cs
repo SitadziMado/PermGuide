@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Timetable
+    class Timetable : BaseDatabaseObject
     {
-        internal Timetable(TimetableRecord timetableRecord)
+        internal Timetable(DatabaseManager man, TimetableRecord timetableRecord) :
+            base(man)
         {
             TimetableRecord = timetableRecord;
         }

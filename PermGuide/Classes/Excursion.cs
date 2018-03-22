@@ -9,13 +9,13 @@ namespace PermGuide.Classes
 {
     class Excursion : BaseContent
     {
-        internal Excursion(ExcursionRecord excursionRecord) :
-            base(excursionRecord)
+        internal Excursion(DatabaseManager man, ExcursionRecord excursionRecord) :
+            base(man, excursionRecord)
         {
 
         }
 
-        public void AddSights(User sender, IEnumerable<Sight> sights)
+        public Excursion AddSights(User sender, IEnumerable<Sight> sights)
         {
             if (!sender.Owns(this))
                 throw new AccessDeniedException();
@@ -23,10 +23,10 @@ namespace PermGuide.Classes
             foreach (var v in sights)
                 ExcursionRecord.SightRecord.Add(v.SightRecord);
 
-            sender.SaveChanges();
+            return this;
         }
 
-        public void RemoveSights(User sender, IEnumerable<Sight> sights)
+        public Excursion RemoveSights(User sender, IEnumerable<Sight> sights)
         {
             if (!sender.Owns(this))
                 throw new AccessDeniedException();
@@ -34,17 +34,17 @@ namespace PermGuide.Classes
             foreach (var v in sights)
                 ExcursionRecord.SightRecord.Remove(v.SightRecord);
 
-            sender.SaveChanges();
+            return this;
         }
 
-        public void SetArticle(User sender, Article article)
+        public Excursion SetArticle(User sender, Article article)
         {
             if (!sender.Owns(this))
                 throw new AccessDeniedException();
 
             ExcursionRecord.ArticleRecord = article.ArticleRecord;
 
-            sender.SaveChanges();
+            return this;
         }
 
         public IEnumerable<DbGeography> Points 

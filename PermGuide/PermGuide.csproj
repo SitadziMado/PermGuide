@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Classes\AccessDeniedException.cs" />
     <Compile Include="Classes\Article.cs" />
+    <Compile Include="Classes\BaseDatabaseObject.cs" />
     <Compile Include="Classes\Excursion.cs" />
     <Compile Include="Classes\MediaFile.cs" />
     <Compile Include="Classes\BaseContent.cs" />
