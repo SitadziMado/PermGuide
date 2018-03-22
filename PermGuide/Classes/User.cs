@@ -77,6 +77,59 @@ namespace PermGuide.Classes
         public bool Owns(BaseContent content)
             => UserRecord == content.Record.UserRecord;
 
+        public User CreateTimetable(string name)
+        {
+            var record = new TimetableRecord
+            {
+                // Name = name,
+                CreationDate = DateTime.Now,
+                UserRecord = UserRecord
+            };
+
+            // Добавить ассоциации
+            UserRecord.TimetableRecord.Add(record);
+
+            Manager.Container.TimetableRecordSet.Add(record);
+
+            return this;
+        }
+
+        public User Propose(BaseContent content)
+        {
+            if (!IsModerator)
+                throw new AccessDeniedException();
+
+            var record = content.Record;
+
+            record.ProposalStatus = ProposalStatus.Proposed;
+            record.UserRecord = UserRecord;
+
+            // Добавить ассоциации
+            UserRecord.ContentRecord.Add(record);
+
+            Manager.Container.ContentRecordSet.Add(record);
+
+            return this;
+        }
+
+        public User Add(BaseContent content)
+        {
+            if (!IsModerator)
+                throw new AccessDeniedException();
+
+            var record = content.Record;
+
+            record.ProposalStatus = ProposalStatus.Added;
+            record.UserRecord = UserRecord;
+
+            // Добавить ассоциации
+            UserRecord.ContentRecord.Add(record);
+
+            Manager.Container.ContentRecordSet.Add(record);
+
+            return this;
+        }
+
         private HashSet<T> GetHashSetOfRecords<T, U>()
             where T : class
             where U : class

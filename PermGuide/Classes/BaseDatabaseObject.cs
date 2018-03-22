@@ -8,7 +8,7 @@ namespace PermGuide.Classes
 {
     abstract class BaseDatabaseObject
     {
-        public BaseDatabaseObject(DatabaseManager databaseManager)
+        internal BaseDatabaseObject(DatabaseManager databaseManager)
         {
             Manager = databaseManager;
         }

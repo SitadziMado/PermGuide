@@ -491,7 +491,7 @@
           <End Type="PermGuide.ArticleRecord" Multiplicity="1" Role="Article" />
         </Association>
         <Association Name="ExcursionSight">
-          <End Type="PermGuide.ExcursionRecord" Role="Excursion" Multiplicity="1" />
+          <End Type="PermGuide.ExcursionRecord" Role="Excursion" Multiplicity="*" />
           <End Type="PermGuide.SightRecord" Role="Sight" Multiplicity="*" />
         </Association>
         <Association Name="UserRecordFileRecord">

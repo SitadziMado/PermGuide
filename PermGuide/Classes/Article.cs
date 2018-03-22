@@ -40,6 +40,32 @@ namespace PermGuide.Classes
             }
         }
 
+        public Article AddFile(User sender, string uri, MediaType mediaType)
+        {
+            var record = new FileRecord
+            {
+                Uri = uri,
+                MediaType = mediaType,
+                ArticleRecord = ArticleRecord,
+                UserRecord = sender.UserRecord
+            };
+
+            ArticleRecord.FileRecord.Add(record);
+            sender.UserRecord.FileRecord.Add(record);
+
+            return this;
+        }
+
+        public Article RemoveFile(User sender, MediaFile file)
+        {
+            var record = file.FileRecord;
+
+            ArticleRecord.FileRecord.Remove(record);
+            sender.UserRecord.FileRecord.Remove(record);
+
+            return this;
+        }
+
         private IEnumerable<MediaFile> GetUrisByMediaType(MediaType mediaType)
         {
             return from v

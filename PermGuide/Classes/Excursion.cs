@@ -21,7 +21,10 @@ namespace PermGuide.Classes
                 throw new AccessDeniedException();
 
             foreach (var v in sights)
+            {
                 ExcursionRecord.SightRecord.Add(v.SightRecord);
+                v.SightRecord.ExcursionRecord.Add(ExcursionRecord);
+            }
 
             return this;
         }
@@ -32,7 +35,10 @@ namespace PermGuide.Classes
                 throw new AccessDeniedException();
 
             foreach (var v in sights)
+            {
                 ExcursionRecord.SightRecord.Remove(v.SightRecord);
+                v.SightRecord.ExcursionRecord.Remove(ExcursionRecord);
+            }
 
             return this;
         }
@@ -43,6 +49,7 @@ namespace PermGuide.Classes
                 throw new AccessDeniedException();
 
             ExcursionRecord.ArticleRecord = article.ArticleRecord;
+            article.ArticleRecord.ExcursionRecord = ExcursionRecord;
 
             return this;
         }

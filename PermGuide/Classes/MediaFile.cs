@@ -15,7 +15,9 @@ namespace PermGuide.Classes
             FileRecord = fileRecord;
         }
 
-        object GetContent()
+        // public MediaFile SetUri(string uri, MediaType mediaType);
+
+        public object GetContent()
         {
             Uri uri = new Uri(FileRecord.Uri);
             object result;

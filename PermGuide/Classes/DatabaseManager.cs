@@ -117,7 +117,7 @@ namespace PermGuide.Classes
             Container.UserRecordSet.Add(userRecord);
             Container.SaveChanges();
 
-            return new User(userRecord);
+            return new User(this, userRecord);
         }
 
         public User Login(string login, string password)
@@ -133,7 +133,7 @@ namespace PermGuide.Classes
 
             try
             {
-                result = new User(ans.Single());
+                result = new User(this, ans.Single());
 
                 /*var rec = ans.Single();
 
