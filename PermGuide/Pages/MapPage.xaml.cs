@@ -71,7 +71,7 @@ namespace PermGuide.Pages
                         .SetAddress(mUser, AddressTextBox.Text)
                         .SetName(mUser, NameTextBox.Text);
 
-                    mUser.Propose(sight).Commit();
+                    mUser.Add(sight).Commit();
 
                     GuideMap.Children.Add(pin);
                 }

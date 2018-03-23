@@ -9,7 +9,11 @@
       Title="ArticlePage">
 
     <Grid>
-        <WebBrowser Margin="115,10,10,10"/>
-        <StackPanel HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
+        <WebBrowser Source="https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D1%80%D0%BC%D1%8C" Margin="115,10,10,10"/>
+        <StackPanel HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" VerticalAlignment="Top" Width="100">
+            <Button Content="Изменить"/>
+            <Label Content="Статьи"/>
+            <ListBox Name="ArticlesListBox" Height="231"/>
+        </StackPanel>
     </Grid>
 </Page>

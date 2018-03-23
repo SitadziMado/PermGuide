@@ -28,17 +28,8 @@ namespace PermGuide
         {
             InitializeComponent();
             mManager = new DatabaseManager();
-
-            try
-            {
-                mManager.Register("sunmax1234@mail.ru", "1234");
-            }
-            catch
-            {
-
-            }
-
-            mUser = mManager.Login("sunmax1234@mail.ru", "1234");
+            mPage = new RegisterPage(this);
+            ShowCurrentPage();
         }
 
         private void NavigationButton_Click(object sender, RoutedEventArgs e)
@@ -79,8 +70,8 @@ namespace PermGuide
             { "reviews", (u) => new ReviewsPage(u) },
         };
 
-        private DatabaseManager mManager;
-        private User mUser;
+        internal DatabaseManager mManager;
+        internal User mUser;
         private Page mPage;
     }
 }

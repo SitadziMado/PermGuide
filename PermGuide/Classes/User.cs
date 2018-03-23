@@ -67,18 +67,26 @@ namespace PermGuide.Classes
 
         public IEnumerable<Article> GetArticles()
         {
+            var result = from v
+                         in Manager.Container.ContentRecordSet
+                         where v is ArticleRecord && v.ProposalStatus == ProposalStatus.Added
+                         select v as ArticleRecord;
+            
             return from v
-                   in Manager.Container.ContentRecordSet
-                   where v is ArticleRecord && v.ProposalStatus == ProposalStatus.Added
-                   select new Article(Manager, v as ArticleRecord);
+                   in result.AsEnumerable()
+                   select new Article(Manager, v);
         }
 
         public IEnumerable<Excursion> GetExcursions()
         {
+            var result =  from v
+                          in Manager.Container.ContentRecordSet
+                          where v is ExcursionRecord && v.ProposalStatus == ProposalStatus.Added
+                          select v as ExcursionRecord;
+
             return from v
-                   in Manager.Container.ContentRecordSet
-                   where v is ExcursionRecord && v.ProposalStatus == ProposalStatus.Added
-                   select new Excursion(Manager, v as ExcursionRecord);
+                   in result.AsEnumerable()
+                   select new Excursion(Manager, v);
         }
 
         public IEnumerable<Sight> GetSights()
@@ -156,36 +164,18 @@ namespace PermGuide.Classes
             return this;
         }
 
-        public User Propose(BaseContent content)
-        {
-            // if (!IsModerator)
-            //     throw new AccessDeniedException();
-
-            var record = content.Record;
-
-            record.ProposalStatus = ProposalStatus.Proposed;
-            record.UserRecord = UserRecord;
-
-            // Добавить ассоциации
-            UserRecord.ContentRecord.Add(record);
-
-            Manager.Container.ContentRecordSet.Add(record);
-
-            return this;
-        }
-
         public User Add(BaseContent content)
         {
-            if (!IsModerator)
-                throw new AccessDeniedException();
-
             var record = content.Record;
 
-            record.ProposalStatus = ProposalStatus.Added;
             record.UserRecord = UserRecord;
 
             // Добавить ассоциации
             UserRecord.ContentRecord.Add(record);
+
+            record.ProposalStatus = IsModerator
+                ? ProposalStatus.Added
+                : ProposalStatus.Proposed;
 
             Manager.Container.ContentRecordSet.Add(record);
 

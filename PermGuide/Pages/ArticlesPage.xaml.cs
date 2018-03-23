@@ -25,6 +25,18 @@ namespace PermGuide.Pages
         {
             InitializeComponent();
             mUser = user;
+            
+            /* Task.Factory.StartNew(() =>
+            {
+                ArticlesListBox.ItemsSource = GetArticlesInfo();
+            }); */
+
+            ArticlesListBox.ItemsSource = GetArticlesInfo();
+        }
+
+        private Article[] GetArticlesInfo()
+        {
+            return mUser.GetArticles().ToArray() as Article[];
         }
 
         private User mUser;
