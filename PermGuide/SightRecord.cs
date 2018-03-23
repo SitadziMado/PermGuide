@@ -20,7 +20,7 @@ namespace PermGuide
             this.ExcursionRecord = new HashSet<ExcursionRecord>();
         }
     
-        public System.Data.Entity.Spatial.DbGeography Location { get; set; }
+        public string Location { get; set; }
         public string Address { get; set; }
     
         public virtual RegionRecord RegionRecord { get; set; }

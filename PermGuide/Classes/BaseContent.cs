@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    abstract class BaseContent : BaseDatabaseObject
+    public abstract class BaseContent : BaseDatabaseObject
     {
         internal BaseContent(
             DatabaseManager man, 

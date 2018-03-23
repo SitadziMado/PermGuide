@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    abstract class BaseDatabaseObject
+    public abstract class BaseDatabaseObject
     {
         internal BaseDatabaseObject(DatabaseManager databaseManager)
         {
@@ -27,6 +27,20 @@ namespace PermGuide.Classes
             return this;
         }
 
+        protected int GetNextId()
+        {
+            int result;
+
+            lock (mIdLock)
+            {
+                result = mId++;
+            }
+
+            return result;
+        }
+
         public DatabaseManager Manager { get; private set; }
+        private static object mIdLock = new object();
+        private static int mId = 1;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -154,6 +155,21 @@ namespace PermGuide
             }
 
             return obj;
+        }
+
+        public static Location AsLocation(this string str)
+        {
+            var coords = (
+                    from v
+                    in str.Split(',')
+                    select int.Parse(v)
+                ).ToArray();
+
+            return new Location(
+                coords[0],
+                coords[1],
+                coords[2]
+            );
         }
 
         private static readonly DataContractJsonSerializerSettings mSettings =

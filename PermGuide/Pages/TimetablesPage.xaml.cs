@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PermGuide.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +19,14 @@ namespace PermGuide.Pages
     /// <summary>
     /// Логика взаимодействия для TimetablePage.xaml
     /// </summary>
-    public partial class TimetablePage : Page
+    public partial class TimetablesPage : Page
     {
-        public TimetablePage()
+        public TimetablesPage(User user)
         {
             InitializeComponent();
+            mUser = user;
         }
+
+        private User mUser;
     }
 }

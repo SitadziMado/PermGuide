@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Excursion : BaseContent
+    public class Excursion : BaseContent
     {
         internal Excursion(DatabaseManager man, ExcursionRecord excursionRecord) :
             base(man, excursionRecord)
@@ -54,8 +55,8 @@ namespace PermGuide.Classes
             return this;
         }
 
-        public IEnumerable<DbGeography> Points 
-            => from v in ExcursionRecord.SightRecord select v.Location;
+        public IEnumerable<Location> Points 
+            => from v in ExcursionRecord.SightRecord select v.Location.AsLocation();
 
         internal ExcursionRecord ExcursionRecord => Record as ExcursionRecord;
     }

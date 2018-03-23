@@ -6,5 +6,16 @@
         xmlns:local="clr-namespace:PermGuide"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid/>
+    <Grid>
+        <StackPanel HorizontalAlignment="Left" Height="300" Margin="10,10,0,0" VerticalAlignment="Top" Width="127">
+            <Button x:Name="ProfileButton" Content="Профиль" Click="NavigationButton_Click" Tag="profile"/>
+            <Button x:Name="MapButton" Content="Карта" Tag="map" Click="NavigationButton_Click"/>
+            <Button x:Name="ArticleButton" Content="Статьи" Click="NavigationButton_Click" Tag="articles"/>
+            <Button x:Name="TimetableButton" Content="Расписания" Click="NavigationButton_Click" Tag="timetables"/>
+            <Rectangle Fill="#FFF4F4F5" Height="3" Stroke="Black"/>
+            <Button Content="Управление правами" Click="NavigationButton_Click" Tag="privileges"/>
+            <Button Content="Отзывы" Click="NavigationButton_Click" Tag="reviews"/>
+        </StackPanel>
+        <Frame x:Name="MainFrame" Content="Frame" HorizontalAlignment="Left" Height="300" Margin="142,10,0,0" VerticalAlignment="Top" Width="365"/>
+    </Grid>
 </Window>

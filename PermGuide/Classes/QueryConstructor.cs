@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class QueryConstructor
+    public class QueryConstructor
     {
         public class QueryTree
         {

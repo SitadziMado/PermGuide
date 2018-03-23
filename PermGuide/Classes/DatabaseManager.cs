@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    sealed class DatabaseManager
+    public sealed class DatabaseManager
     {
         public DatabaseManager()
         {
@@ -155,7 +155,7 @@ namespace PermGuide.Classes
 
         public void TestQueryConstructor()
         {
-            QueryConstructor qc = new QueryConstructor(
+            /* QueryConstructor qc = new QueryConstructor(
                 "ArticleRecord",
                 "ContentRecord",
                 "ExcursionRecord",
@@ -171,7 +171,8 @@ namespace PermGuide.Classes
 
             root.Children[1].Criterium = "sunmax1234@mail.ru";
 
-            var query = qc.Query(Container.UserRecordSet, root).ToArray();
+            var query = qc.Query(Container.UserRecordSet, root).ToArray(); */
+            
         }
 
         public IEnumerable<ArticleRecord> ArticleRecords =>

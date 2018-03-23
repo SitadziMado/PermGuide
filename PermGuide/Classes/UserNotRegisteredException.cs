@@ -6,7 +6,8 @@ namespace PermGuide.Classes
     [Serializable]
     internal class UserNotRegisteredException : Exception
     {
-        public UserNotRegisteredException() : base("Пользователь еще не зарегистрировался.")
+        public UserNotRegisteredException() : 
+            base("Пользователь еще не зарегистрировался либо уже имеет аккаунт.")
         {
         }
 

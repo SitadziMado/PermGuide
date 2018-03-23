@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PermGuide.Classes
 {
     [Serializable]
-    internal class RecordNotValidException : Exception
+    public class RecordNotValidException : Exception
     {
         public RecordNotValidException() : base("Время действия данной сущности истекло.")
         {

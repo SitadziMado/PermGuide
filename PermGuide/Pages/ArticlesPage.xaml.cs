@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PermGuide.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,13 +17,16 @@ using System.Windows.Shapes;
 namespace PermGuide.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ReviewPage.xaml
+    /// Логика взаимодействия для ArticlePage.xaml
     /// </summary>
-    public partial class ReviewPage : Page
+    public partial class ArticlesPage : Page
     {
-        public ReviewPage()
+        public ArticlesPage(User user)
         {
             InitializeComponent();
+            mUser = user;
         }
+
+        private User mUser;
     }
 }

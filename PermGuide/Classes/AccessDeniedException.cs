@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PermGuide.Classes
 {
     [Serializable]
-    internal class AccessDeniedException : Exception
+    public class AccessDeniedException : Exception
     {
         public AccessDeniedException()
         {

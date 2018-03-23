@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Sight : BaseContent
+    public class Sight : BaseContent
     {
         internal Sight(DatabaseManager man, SightRecord sightRecord) :
             base(man, sightRecord)
@@ -15,12 +16,19 @@ namespace PermGuide.Classes
 
         }
 
-        public Sight SetLocation(User sender, DbGeography location)
+        public Sight(User user) :
+            base(user.Manager, new SightRecord())
+        {
+            SightRecord.Id = GetNextId();
+            SightRecord.UserRecord = user.UserRecord;
+        }
+
+        public Sight SetLocation(User sender, Location location)
         {
             if (!sender.Owns(this))
                 throw new AccessDeniedException();
 
-            SightRecord.Location = location;
+            SightRecord.Location = location.ToString();
 
             return this;
         }
@@ -46,7 +54,7 @@ namespace PermGuide.Classes
             return this;
         }
 
-        public DbGeography Location => (Record as SightRecord).Location;
+        public Location Point => SightRecord.Location.AsLocation();
 
         internal SightRecord SightRecord => Record as SightRecord;
     }

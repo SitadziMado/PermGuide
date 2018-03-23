@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<componentModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" dslVersion="1.0.0.0" Id="818dda60-89b7-43d3-980e-89692a865d9a" name="UMLComponentDiagram1" linkedPackageId="65b97950-7caf-49a6-be2e-796697ee5221" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="816bdd2c-c113-449c-8b68-09fd08b54f29">
+      <profileInstance Id="b2634288-7603-4860-9920-042012b5b05d" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="623fd5a5-3ece-4c10-a307-8bd5bd73c42d">
+      <profileInstance Id="9bab03ce-ff33-427c-85c9-63b684b75593" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <componentModelHasComponents>
+      <component Id="65588483-7f49-4fe0-b290-9d4b9930b8fe" name="Component2" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e0f4f8f0-3570-44b1-b6ea-e19b5692b925" />
+      </component>
+    </componentModelHasComponents>
+  </packagedElements>
+  <package Id="65b97950-7caf-49a6-be2e-796697ee5221" name="ModelingProject1">
+    <elementDefinition Id="2615e1be-8f85-4d03-9d75-af7a00f82d66" />
+  </package>
+</componentModel>

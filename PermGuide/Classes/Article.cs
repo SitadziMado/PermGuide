@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class Article : BaseContent
+    public class Article : BaseContent
     {
         internal Article(DatabaseManager man, ArticleRecord articleRecord) :
             base(man, articleRecord)
@@ -42,6 +42,9 @@ namespace PermGuide.Classes
 
         public Article AddFile(User sender, string uri, MediaType mediaType)
         {
+            if (!sender.Owns(this))
+                throw new AccessDeniedException();
+
             var record = new FileRecord
             {
                 Uri = uri,
@@ -58,6 +61,9 @@ namespace PermGuide.Classes
 
         public Article RemoveFile(User sender, MediaFile file)
         {
+            if (!sender.Owns(this))
+                throw new AccessDeniedException();
+            
             var record = file.FileRecord;
 
             ArticleRecord.FileRecord.Remove(record);

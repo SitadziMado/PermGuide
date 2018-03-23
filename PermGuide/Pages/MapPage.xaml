@@ -11,7 +11,17 @@
 
     <Grid x:Name="LayoutRoot" Background="White">
         <m:Map CredentialsProvider="AqwI4hLRwB1SPZU8vRMr4UdCRIbvwXa8JMwC3jUpL7koTQkKy8iNplHOEgqEk3av"
-               x:Name="guideMap">
+               x:Name="GuideMap" Margin="95,10,10,10" UseInertia="True" MouseUp="GuideMap_MouseUp">
         </m:Map>
+        <StackPanel HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" VerticalAlignment="Top" Width="80">
+            <RadioButton Name="ChooseOption" Content="Выбрать" IsChecked="True" Checked="ChooseOption_Checked"/>
+            <RadioButton Name="AddOption" Content="Добавить" Checked="AddOption_Checked"/>
+            <Label Content="Название" VerticalAlignment="Top"/>
+            <TextBox x:Name="NameTextBox" Height="23" TextWrapping="Wrap" Text="" IsEnabled="False"/>
+            <Label Content="Координаты" VerticalAlignment="Top"/>
+            <TextBox Name="CoordsTextBox" Height="23" TextWrapping="Wrap" Text="" IsEnabled="False"/>
+            <Label Content="Адрес" VerticalAlignment="Top"/>
+            <TextBox Name="AddressTextBox" Height="23" TextWrapping="Wrap" Text="" IsEnabled="False"/>
+        </StackPanel>
     </Grid>
 </Page>

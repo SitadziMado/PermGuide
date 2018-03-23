@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PermGuide.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +14,40 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PermGuide
+namespace PermGuide.Pages
 {
     /// <summary>
     /// Логика взаимодействия для Profile.xaml
     /// </summary>
     public partial class ProfilePage : Page
     {
-        public ProfilePage()
+        public ProfilePage(User user)
         {
             InitializeComponent();
+            mUser = user;
         }
+
+        private void ApplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                mUser
+                  .VerifyLogin(LoginTextBox.Text)
+                  .VerifyPassword(PasswordTextBox.Password)
+                  .VerifyNickname(NicknameTextBox.Text);
+
+                mUser
+                    .SetLogin(LoginTextBox.Text)
+                    .SetPassword(PasswordTextBox.Password)
+                    .SetNickname(NicknameTextBox.Text)
+                    .Commit();
+            }
+            catch (ArgumentException)
+            {
+
+            }
+        }
+
+        private User mUser;
     }
 }

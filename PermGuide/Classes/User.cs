@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PermGuide.Classes
 {
-    class User : BaseDatabaseObject
+    public class User : BaseDatabaseObject
     {
         internal User(DatabaseManager man, UserRecord userRecord) : 
             base(man)
@@ -20,7 +20,7 @@ namespace PermGuide.Classes
             UserRecord.Login = value;
             return this;
         }
-        
+
         public User SetPassword(string value)
         {
             UserRecord.Password = value.Encrypt();
@@ -30,22 +30,77 @@ namespace PermGuide.Classes
         public User SetNickname(string value)
         {
             UserRecord.Nickname = value;
+            return this;
+        }
+        
+        public User VerifyLogin(string value)
+        {
+            if (value.Length == 0)
+                throw new ArgumentException("Пустая строка -- некорректниый логин.");
 
             return this;
         }
 
-        public HashSet<Article> GetArticles()
+        public User VerifyPassword(string value)
+        {
+            if (value.Length == 0)
+                throw new ArgumentException("Пустая строка -- некорректниый логин.");
+
+            return this;
+        }
+
+        public User VerifyNickname(string value)
+        {
+            return this;
+        }
+
+        /* public HashSet<Article> GetArticles()
             => GetHashSetOfRecords<Article, ArticleRecord>(x => x.ProposalStatus == ProposalStatus.Added);
 
         public HashSet<Excursion> GetExcursions()
             => GetHashSetOfRecords<Excursion, ExcursionRecord>(x => x.ProposalStatus == ProposalStatus.Added);
 
         public HashSet<Sight> GetSights()
-            => GetHashSetOfRecords<Sight, SightRecord>(x => x.ProposalStatus == ProposalStatus.Added);
+            => GetHashSetOfRecords<Sight, SightRecord>(x => x.ProposalStatus == ProposalStatus.Added); */
 
-        public HashSet<Timetable> GetTimetables() => GetHashSetOfRecords<Timetable, TimetableRecord>();
+        // public HashSet<Timetable> GetTimetables() => GetHashSetOfRecords<Timetable, TimetableRecord>();
 
-        public User ChangeStatus(User other, UserStatus status)
+        public IEnumerable<Article> GetArticles()
+        {
+            return from v
+                   in Manager.Container.ContentRecordSet
+                   where v is ArticleRecord && v.ProposalStatus == ProposalStatus.Added
+                   select new Article(Manager, v as ArticleRecord);
+        }
+
+        public IEnumerable<Excursion> GetExcursions()
+        {
+            return from v
+                   in Manager.Container.ContentRecordSet
+                   where v is ExcursionRecord && v.ProposalStatus == ProposalStatus.Added
+                   select new Excursion(Manager, v as ExcursionRecord);
+        }
+
+        public IEnumerable<Sight> GetSights()
+        {
+            var result = from v
+                         in Manager.Container.ContentRecordSet
+                         where v is SightRecord && v.ProposalStatus == ProposalStatus.Added
+                         select v as SightRecord;
+
+            return from v
+                   in result.AsEnumerable()
+                   select new Sight(Manager, v);
+        }
+
+        public IEnumerable<Timetable> GetTimetables()
+        {
+            return from v
+                   in Manager.Container.TimetableRecordSet
+                   select new Timetable(Manager, v);
+        }
+
+            public User ChangeStatus(User other, UserStatus status)
         {
             if (!IsAdmin)
                 throw new AccessDeniedException();
@@ -66,12 +121,19 @@ namespace PermGuide.Classes
             return this;
         }
 
-        public HashSet<Review> GetComplaints()
+        // public HashSet<Review> GetComplaints()
+
+        public IEnumerable<Review> GetComplaints()
         {
             if (!IsAdmin)
                 throw new AccessDeniedException();
 
-            return GetHashSetOfRecords<Review, ReviewRecord>(x => x.Mark == "");
+            return from v
+                   in Manager.Container.ReviewRecordSet
+                   where v.Mark == ""
+                   select new Review(Manager, v);
+
+            // return GetHashSetOfRecords<Review, ReviewRecord>(x => x.Mark == "");
         }
 
         public bool Owns(BaseContent content)
@@ -96,8 +158,8 @@ namespace PermGuide.Classes
 
         public User Propose(BaseContent content)
         {
-            if (!IsModerator)
-                throw new AccessDeniedException();
+            // if (!IsModerator)
+            //     throw new AccessDeniedException();
 
             var record = content.Record;
 
@@ -130,7 +192,7 @@ namespace PermGuide.Classes
             return this;
         }
 
-        private HashSet<T> GetHashSetOfRecords<T, U>()
+        /* private HashSet<T> GetHashSetOfRecords<T, U>()
             where T : class
             where U : class
         {
@@ -158,7 +220,7 @@ namespace PermGuide.Classes
             }
 
             return result;
-        }
+        } */
 
         public bool IsAdmin => Status == UserStatus.Administrator;
         public bool IsModerator => IsAdmin || Status == UserStatus.Moderator;
